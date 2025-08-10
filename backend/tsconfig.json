@@ -16,6 +16,8 @@
 		"declaration": true,
 		"declarationMap": true,
 
+		"resolveJsonModule": true,
+
 		// Stricter Typechecking Options
 		"noUncheckedIndexedAccess": true,
 		"exactOptionalPropertyTypes": true,
@@ -44,5 +46,6 @@
 		"paths": {
 			"#*": ["./src/*"]
 		}
-	}
+	},
+	"include": ["src/**/*"]
 }

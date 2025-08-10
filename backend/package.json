@@ -7,16 +7,23 @@
 		"#*": "./dist/*.js"
 	},
 	"scripts": {
-		"dev:node": "node --watch dist/index.js",
+		"dev:node": "node --watch --env-file .env dist/index.js",
 		"dev:tsc": "tsc --watch",
+		"db:generate": "drizzle-kit generate",
+		"db:migrate": "drizzle-kit migrate",
 		"format": "prettier --write ."
 	},
 	"dependencies": {
+		"@fastify/autoload": "^6.3.1",
+		"@fastify/cors": "^11.1.0",
+		"drizzle-orm": "^0.44.4",
 		"fastify": "^5.4.0",
+		"fastify-firebase": "^2.0.1",
 		"typescript": "^5.9.2"
 	},
 	"devDependencies": {
 		"@types/node": "^24.2.0",
+		"drizzle-kit": "^0.31.4",
 		"prettier": "^3.6.2",
 		"wrangler": "^4.28.1"
 	}
