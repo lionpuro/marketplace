@@ -39,13 +39,7 @@
 		"isolatedModules": true,
 		"noUncheckedSideEffectImports": true,
 		"moduleDetection": "force",
-		"skipLibCheck": true,
-
-		// Import alias
-		"baseUrl": ".",
-		"paths": {
-			"#*": ["./src/*"]
-		}
+		"skipLibCheck": true
 	},
 	"include": ["src/**/*"]
 }

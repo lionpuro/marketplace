@@ -3,9 +3,6 @@
 	"type": "module",
 	"version": "1.0.0",
 	"main": "index.js",
-	"imports": {
-		"#*": "./dist/*.js"
-	},
 	"scripts": {
 		"dev:node": "node --watch --env-file .env dist/index.js",
 		"dev:tsc": "tsc --watch",
