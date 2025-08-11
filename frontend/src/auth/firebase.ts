@@ -26,13 +26,11 @@ export const auth = getAuth(app);
 export const signInUser = async (
 	email: string,
 	password: string,
-): Promise<UserCredential | undefined> => {
-	if (!email || !password) return;
+): Promise<UserCredential> => {
 	return await signInWithEmailAndPassword(auth, email, password);
 };
 
 export const signUpUser = async (email: string, password: string) => {
-	if (!email || !password) return;
 	return await createUserWithEmailAndPassword(auth, email, password);
 };
 
