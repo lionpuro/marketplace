@@ -2,7 +2,7 @@ import "./index.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
-import { AuthProvider } from "./auth/context";
+import { AuthProvider } from "./auth/provider";
 import { routeTree } from "./routeTree.gen";
 
 const router = createRouter({ routeTree });
