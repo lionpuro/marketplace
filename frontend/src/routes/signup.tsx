@@ -31,9 +31,9 @@ function SignUp() {
 	};
 
 	return (
-		<div className="flex flex-col max-w-screen-sm mx-auto w-full">
+		<div className="flex flex-col max-w-lg mx-auto w-full">
 			<h1 className="text-xl font-semibold mb-8">Sign up</h1>
-			<form onSubmit={onSubmit} className="flex flex-col gap-2 max-w-lg">
+			<form onSubmit={onSubmit} className="flex flex-col gap-2">
 				<label htmlFor="display_name">Name</label>
 				<Input
 					id="display_name"
