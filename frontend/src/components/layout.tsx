@@ -6,7 +6,7 @@ const Layout = ({ children }: { children?: ReactNode }) => {
 	const { isAuthenticated, signOut } = useAuth();
 	return (
 		<>
-			<div className="flex flex-col">
+			<div className="flex flex-col min-h-full">
 				<header className="flex border-b border-neutral-200">
 					<nav className="flex items-center p-3 w-full">
 						<Link
@@ -32,7 +32,7 @@ const Layout = ({ children }: { children?: ReactNode }) => {
 						)}
 					</nav>
 				</header>
-				<div className="flex flex-col p-8">{children}</div>
+				<div className="flex flex-col p-8 grow">{children}</div>
 			</div>
 		</>
 	);
