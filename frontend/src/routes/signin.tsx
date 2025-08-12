@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import type { FormEvent } from "react";
 import Input from "../components/input";
-import { signin } from "../auth";
+import { signInWithEmail } from "../auth/firebase";
 
 export const Route = createFileRoute("/signin")({
 	component: SignIn,
@@ -15,7 +15,7 @@ function SignIn() {
 		const email = form["email"].value;
 		const password = form["password"].value;
 		try {
-			await signin(email, password);
+			await signInWithEmail(email, password);
 			navigate({ to: "/" });
 		} catch (err) {
 			console.error(err);

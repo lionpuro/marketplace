@@ -23,14 +23,14 @@ const app = initializeApp(config);
 
 export const auth = getAuth(app);
 
-export const signInUser = async (
+export const signInWithEmail = async (
 	email: string,
 	password: string,
 ): Promise<UserCredential> => {
 	return await signInWithEmailAndPassword(auth, email, password);
 };
 
-export const signUpUser = async (email: string, password: string) => {
+export const createUserWithEmail = async (email: string, password: string) => {
 	return await createUserWithEmailAndPassword(auth, email, password);
 };
 

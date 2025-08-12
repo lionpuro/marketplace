@@ -31,7 +31,11 @@ server.addHook("preHandler", async (req, res) => {
 		if (!decoded.uid || !decoded.email) {
 			return res.code(401).send({ message: "Unauthorized" });
 		}
-		const user: AuthUser = { id: decoded.uid, email: decoded.email };
+		const user: AuthUser = {
+			id: decoded.uid,
+			email: decoded.email,
+			email_verified: decoded.email_verified === true,
+		};
 		req.user = user;
 	} catch (err) {
 		return res.code(401).send({ message: "Unauthorized" });

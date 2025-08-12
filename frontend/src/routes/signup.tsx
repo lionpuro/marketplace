@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import type { FormEvent } from "react";
+import { type FormEvent } from "react";
 import Input from "../components/input";
-import { signup } from "../auth";
+import { createUser, signup } from "../auth";
 
 export const Route = createFileRoute("/signup")({
 	component: SignUp,
@@ -9,6 +9,7 @@ export const Route = createFileRoute("/signup")({
 
 function SignUp() {
 	const navigate = useNavigate();
+
 	const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const form = e.currentTarget;
@@ -17,7 +18,12 @@ function SignUp() {
 		const password = form["password"].value;
 
 		try {
-			await signup(name, email, password);
+			const cred = await signup(name, email, password);
+			await createUser(cred);
+			if (!cred.user.emailVerified) {
+				navigate({ to: "/account/verification" });
+				return;
+			}
 			navigate({ to: "/" });
 		} catch (err) {
 			console.error(err);

@@ -12,4 +12,5 @@ export type Repository = typeof repository;
 export type AuthUser = {
 	id: string;
 	email: string;
+	email_verified: boolean;
 };
