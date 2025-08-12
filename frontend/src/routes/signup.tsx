@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { type FormEvent } from "react";
 import Input from "../components/input";
 import { createUser, signup } from "../auth";
+import { H1 } from "../components/headings";
 
 export const Route = createFileRoute("/signup")({
 	component: SignUp,
@@ -32,7 +33,7 @@ function SignUp() {
 
 	return (
 		<div className="flex flex-col max-w-lg mx-auto w-full">
-			<h1 className="text-xl font-semibold mb-8">Sign up</h1>
+			<H1>Sign up</H1>
 			<form onSubmit={onSubmit} className="flex flex-col gap-2">
 				<label htmlFor="display_name">Name</label>
 				<Input

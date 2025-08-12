@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import type { FormEvent } from "react";
 import Input from "../components/input";
 import { signInWithEmail } from "../auth/firebase";
+import { H1 } from "../components/headings";
 
 export const Route = createFileRoute("/signin")({
 	component: SignIn,
@@ -24,7 +25,7 @@ function SignIn() {
 
 	return (
 		<div className="flex flex-col max-w-lg mx-auto w-full">
-			<h1 className="text-xl font-semibold mb-8">Sign in</h1>
+			<H1>Sign in</H1>
 			<form onSubmit={onSubmit} className="flex flex-col gap-2">
 				<label htmlFor="email">Email</label>
 				<Input

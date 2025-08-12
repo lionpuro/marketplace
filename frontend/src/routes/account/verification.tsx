@@ -2,6 +2,7 @@ import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { sendEmailVerification } from "firebase/auth";
 import { useAuth } from "../../auth/use-auth";
+import { H1 } from "../../components/headings";
 
 export const Route = createFileRoute("/account/verification")({
 	component: Verification,
@@ -54,7 +55,7 @@ function Verification() {
 	}
 	return (
 		<div className="flex flex-col max-w-screen-sm mx-auto w-full">
-			<h1 className="text-xl font-semibold mb-8">Verify Your Email</h1>
+			<H1>Verify Your Email</H1>
 			{currentUser && !currentUser.emailVerified && (
 				<div className="flex flex-col gap-4">
 					<p className="text-neutral-800">
