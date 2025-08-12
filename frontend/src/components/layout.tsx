@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { useAuth } from "../auth/use-auth";
+import { IconSignOut, IconUser } from "./icons";
 
 const Layout = ({ children }: { children?: ReactNode }) => {
 	const { isAuthenticated, signOut } = useAuth();
@@ -23,12 +24,22 @@ const Layout = ({ children }: { children?: ReactNode }) => {
 								Sign in
 							</Link>
 						) : (
-							<button
-								onClick={signOut}
-								className="ml-auto bg-red-600/80 text-neutral-50 py-1.5 px-4"
-							>
-								Sign out
-							</button>
+							<div className="ml-auto flex items-center gap-2">
+								<Link
+									to="/account"
+									className="flex items-center gap-1 text-primary-700 p-1.5"
+								>
+									<IconUser className="text-lg" />
+									Account
+								</Link>
+								<button
+									onClick={signOut}
+									className="flex items-center gap-1 text-red-600/90 py-1.5 px-4"
+								>
+									<IconSignOut className="text-lg" />
+									Sign out
+								</button>
+							</div>
 						)}
 					</nav>
 				</header>

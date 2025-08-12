@@ -3,7 +3,13 @@ import { useAuth } from "../auth/use-auth";
 import { Navigate } from "@tanstack/react-router";
 import { Spinner } from "./spinner";
 
-export const Protected = ({ children }: { children: ReactNode }) => {
+export const Protected = ({
+	allowUnverified = false,
+	children,
+}: {
+	allowUnverified?: boolean;
+	children: ReactNode;
+}) => {
 	const { isAuthenticated, currentUser } = useAuth();
 	if (!isAuthenticated) {
 		return <Navigate to="/signin" />;
@@ -15,7 +21,7 @@ export const Protected = ({ children }: { children: ReactNode }) => {
 			</div>
 		);
 	}
-	if (!currentUser.emailVerified) {
+	if (!allowUnverified && !currentUser.emailVerified) {
 		return <Navigate to="/account/verification" />;
 	}
 	return children;
