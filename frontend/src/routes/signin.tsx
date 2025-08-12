@@ -3,6 +3,7 @@ import type { FormEvent } from "react";
 import Input from "../components/input";
 import { signInWithEmail } from "../auth/firebase";
 import { H1 } from "../components/headings";
+import { createUser } from "../auth";
 
 export const Route = createFileRoute("/signin")({
 	component: SignIn,
@@ -16,7 +17,8 @@ function SignIn() {
 		const email = form["email"].value;
 		const password = form["password"].value;
 		try {
-			await signInWithEmail(email, password);
+			const cred = await signInWithEmail(email, password);
+			await createUser(cred);
 			navigate({ to: "/" });
 		} catch (err) {
 			console.error(err);
