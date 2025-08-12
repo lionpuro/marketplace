@@ -1,8 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { type FormEvent } from "react";
-import Input from "../components/input";
-import { createUser, signup } from "../auth";
-import { H1 } from "../components/headings";
+import Input from "#/components/input";
+import { createUser, signup } from "#/auth";
+import { H1 } from "#/components/headings";
 
 export const Route = createFileRoute("/signup")({
 	component: SignUp,

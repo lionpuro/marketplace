@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Protected } from "../../components/protected";
-import { useAuth } from "../../auth/use-auth";
-import { H1 } from "../../components/headings";
+import { Protected } from "#/components/protected";
+import { useAuth } from "#/auth/use-auth";
+import { H1 } from "#/components/headings";
 
 export const Route = createFileRoute("/account/")({
 	component: Component,

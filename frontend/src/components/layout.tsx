@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
-import { useAuth } from "../auth/use-auth";
-import { IconSignOut, IconUser } from "./icons";
+import { useAuth } from "#/auth/use-auth";
+import { IconSignOut, IconUser } from "#/components/icons";
 
 const Layout = ({ children }: { children?: ReactNode }) => {
 	const { isAuthenticated, signOut } = useAuth();

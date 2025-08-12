@@ -1,8 +1,8 @@
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { sendEmailVerification } from "firebase/auth";
-import { useAuth } from "../../auth/use-auth";
-import { H1 } from "../../components/headings";
+import { useAuth } from "#/auth/use-auth";
+import { H1 } from "#/components/headings";
 
 export const Route = createFileRoute("/account/verification")({
 	component: Verification,

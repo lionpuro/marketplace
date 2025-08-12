@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
-import { useAuth } from "../auth/use-auth";
+import { useAuth } from "#/auth/use-auth";
 import { Navigate } from "@tanstack/react-router";
-import { Spinner } from "./spinner";
+import { Spinner } from "#/components/spinner";
 
 export const Protected = ({
 	allowUnverified = false,
