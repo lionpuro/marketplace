@@ -24,27 +24,6 @@ server.register(cors, {
 
 server.register(fastifyFirebase, firebaseJSON);
 
-server.addHook("preHandler", async (req, res) => {
-	const token = req.headers.authorization?.match(/^[Bb]earer (\S+)/)?.[1];
-	if (!token) {
-		return res.code(401).send({ message: "Unauthorized" });
-	}
-	try {
-		const decoded = await server.firebase.auth().verifyIdToken(token);
-		if (!decoded.uid || !decoded.email) {
-			return res.code(401).send({ message: "Unauthorized" });
-		}
-		const user: AuthUser = {
-			id: decoded.uid,
-			email: decoded.email,
-			email_verified: decoded.email_verified === true,
-		};
-		req.user = user;
-	} catch (err) {
-		return res.code(401).send({ message: "Unauthorized" });
-	}
-});
-
 server.register(AutoLoad, {
 	dir: path.join(dirname(fileURLToPath(import.meta.url)), "routes"),
 });

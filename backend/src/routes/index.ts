@@ -4,6 +4,7 @@ import type {
 	FastifyRequest,
 } from "fastify";
 import { repository } from "../repository/index.js";
+import { requireAuth } from "../middleware.js";
 
 const routes: FastifyPluginAsync = async (server: FastifyInstance) => {
 	server.route({
@@ -18,6 +19,7 @@ const routes: FastifyPluginAsync = async (server: FastifyInstance) => {
 				required: ["name"],
 			},
 		},
+		preHandler: [requireAuth(server)],
 		handler: async (
 			req: FastifyRequest<{ Body: { name: string; email: string } }>,
 			res,
@@ -43,6 +45,7 @@ const routes: FastifyPluginAsync = async (server: FastifyInstance) => {
 				},
 			},
 		},
+		preHandler: [requireAuth(server)],
 		handler: async (req: FastifyRequest<{ Params: { id: string } }>, res) => {
 			try {
 				const { id } = req.params;
