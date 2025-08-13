@@ -1,1 +1,5 @@
-export { GoPerson as IconUser, GoSignOut as IconSignOut } from "react-icons/go";
+export {
+	GoPerson as IconUser,
+	GoSignOut as IconSignOut,
+	GoTrash as IconTrash,
+} from "react-icons/go";

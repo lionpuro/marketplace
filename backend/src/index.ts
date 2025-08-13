@@ -17,7 +17,10 @@ const server = Fastify({
 	logger: true,
 });
 
-server.register(cors, { origin: "http://localhost:5173" });
+server.register(cors, {
+	origin: "http://localhost:5173",
+	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+});
 
 server.register(fastifyFirebase, firebaseJSON);
 
