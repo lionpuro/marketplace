@@ -34,6 +34,41 @@ const routes: FastifyPluginAsync = async (server: FastifyInstance) => {
 			}
 		},
 	});
+	type UpdateUserRequest = FastifyRequest<{
+		Params: { id: string };
+		Body: { name: string };
+	}>;
+	server.route({
+		method: "PUT",
+		url: "/users/:id",
+		schema: {
+			body: {
+				type: "object",
+				properties: {
+					name: { type: "string" },
+				},
+				required: ["name"],
+			},
+		},
+		preHandler: [requireAuth(server)],
+		handler: async (req: UpdateUserRequest, res) => {
+			try {
+				const { id } = req.params;
+				if (id !== req.user.id) {
+					return res.code(401).send({ message: "Unauthorized" });
+				}
+				const { name } = req.body;
+				await repository.updateUser({
+					id: id,
+					name: name,
+					email: req.user.email,
+				});
+				return res.code(204).send();
+			} catch (err) {
+				return res.code(500).send();
+			}
+		},
+	});
 	server.route({
 		method: "DELETE",
 		url: "/users/:id",

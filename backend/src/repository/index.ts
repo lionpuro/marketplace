@@ -1,6 +1,7 @@
-import { createUser, deleteUser } from "./user.js";
+import { createUser, deleteUser, updateUser } from "./user.js";
 
 export const repository = {
 	createUser,
+	updateUser,
 	deleteUser,
 };

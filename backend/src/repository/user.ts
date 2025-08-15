@@ -7,6 +7,13 @@ export async function createUser(user: User): Promise<void> {
 	await db.insert(schema.users).values(user).onConflictDoNothing();
 }
 
+export async function updateUser(user: User): Promise<void> {
+	await db
+		.update(schema.users)
+		.set({ name: user.name, email: user.email })
+		.where(eq(schema.users.id, user.id));
+}
+
 export async function deleteUser(id: string): Promise<User | undefined> {
 	const [result] = await db
 		.delete(schema.users)

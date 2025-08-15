@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, type FormEvent, type MouseEvent } from "react";
 import { Protected } from "#/components/protected";
 import { useAuth } from "#/auth/use-auth";
 import { H1 } from "#/components/headings";
 import { Modal } from "#/components/modal";
-import { IconTrash } from "#/components/icons";
+import { IconPencil, IconTrash } from "#/components/icons";
+import { updateProfile } from "firebase/auth";
 
 export const Route = createFileRoute("/account/")({
 	component: Component,
@@ -12,8 +13,14 @@ export const Route = createFileRoute("/account/")({
 
 function Component() {
 	const { currentUser, signOut } = useAuth();
+	const [displayName, setDisplayName] = useState(
+		currentUser?.displayName ?? "",
+	);
 	const [modalOpen, setModalOpen] = useState(false);
+	const [isEditing, setIsEditing] = useState(false);
+
 	const closeModal = () => setModalOpen(false);
+
 	const onDelete = async () => {
 		if (!currentUser) {
 			return;
@@ -36,22 +43,121 @@ function Component() {
 			console.error(err);
 		}
 	};
+
+	const toggleEditing = (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+		setIsEditing(!isEditing);
+	};
+
+	const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const form = e.currentTarget;
+		const name = form["display_name"].value;
+		if (!currentUser || name === "") {
+			return;
+		}
+		if (name === currentUser.displayName) {
+			setIsEditing(false);
+			return;
+		}
+		try {
+			const token = await currentUser.getIdToken();
+			const url = `${import.meta.env.VITE_API_BASE_URL}/users/${currentUser.uid}`;
+			const [res] = await Promise.all([
+				fetch(url, {
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: "Bearer " + token,
+					},
+					body: JSON.stringify({ name: name }),
+				}),
+				updateProfile(currentUser, { displayName: name }),
+			]);
+			if (!res.ok) {
+				throw new Error("failed to update user");
+			}
+		} catch (err) {
+			console.error(err);
+		}
+		setIsEditing(false);
+	};
+
 	return (
-		<div className="flex flex-col grow gap-8 w-full max-w-screen-sm mx-auto">
+		<div className="flex flex-col grow gap-4 w-full max-w-screen-sm mx-auto">
 			<H1>Account</H1>
 			<Protected allowUnverified={true}>
 				<>
 					{currentUser && (
 						<div className="flex flex-col gap-4">
-							<h2 className="font-semibold text-lg"> User information </h2>
-							<div className="flex">
-								<h3 className="font-medium min-w-36"> Name </h3>
-								<span>{currentUser.displayName}</span>
-							</div>
-							<div className="flex">
-								<h3 className="font-medium min-w-36"> Email </h3>
-								<span>{currentUser.email}</span>
-							</div>
+							<form onSubmit={onSubmit} className="flex flex-col gap-4">
+								<div className="flex gap-2">
+									<h2 className="font-semibold text-lg mr-auto">
+										{"User information "}
+									</h2>
+									{!isEditing ? (
+										<button
+											type="button"
+											onClick={toggleEditing}
+											className="flex items-center gap-2 bg-primary-400 text-neutral-50 pl-2 pr-3 py-0.5"
+										>
+											<IconPencil />
+											Edit
+										</button>
+									) : (
+										<>
+											<button
+												type="submit"
+												className="bg-primary-400 disabled:bg-neutral-300 text-neutral-50 disabled:text-neutral-500 px-3 py-0.5"
+												disabled={
+													displayName === currentUser.displayName ||
+													displayName === ""
+												}
+											>
+												Save
+											</button>
+											<button
+												type="button"
+												onClick={toggleEditing}
+												className="bg-neutral-400 text-neutral-50 px-3 py-0.5"
+											>
+												Cancel
+											</button>
+										</>
+									)}
+								</div>
+								<div className="flex items-center">
+									<label
+										className="font-medium min-w-28"
+										htmlFor="display_name"
+									>
+										Name
+									</label>
+									<input
+										id="display_name"
+										name="display_name"
+										type="text"
+										defaultValue={currentUser.displayName ?? undefined}
+										onChange={(e) => setDisplayName(e.target.value)}
+										disabled={!isEditing}
+										className="py-0.5 px-1.5 border border-neutral-300 disabled:border-transparent grow"
+										required
+									/>
+								</div>
+								<div className="flex items-center">
+									<label className="font-medium min-w-28" htmlFor="email">
+										Email
+									</label>
+									<input
+										id="email"
+										name="email"
+										type="text"
+										defaultValue={currentUser.email ?? undefined}
+										disabled={true}
+										className="py-0.5 px-1.5 border border-neutral-300 disabled:border-transparent grow"
+									/>
+								</div>
+							</form>
 							{!currentUser.emailVerified && (
 								<p className="text-sm text-neutral-600">
 									{"Your email is unverified. "}
