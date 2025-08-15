@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { sendEmailVerification } from "firebase/auth";
 import { useAuth } from "#/auth/use-auth";
 import { H1 } from "#/components/headings";
+import { Protected } from "#/components/protected";
 
 export const Route = createFileRoute("/account/verification")({
 	component: Verification,
@@ -54,31 +55,36 @@ function Verification() {
 		return <Navigate to="/signin" />;
 	}
 	return (
-		<div className="flex flex-col max-w-screen-sm mx-auto w-full">
-			<H1>Verify Your Email</H1>
-			{currentUser && !currentUser.emailVerified && (
-				<div className="flex flex-col gap-4">
-					<p className="text-neutral-800">
-						{(timerStarted || attempts > 0) &&
-							`Verification email sent to ${currentUser.email}`}
-					</p>
-					<p className="text-neutral-600">
-						{timerStarted && timeLeft > 0
-							? `You can retry in ${timeLeft / 1000} ${timeLeft / 1000 === 1 ? "second" : "seconds"}`
-							: null}
-					</p>
-					<button
-						onClick={sendVerification}
-						className="bg-primary-400 hover:bg-primary-500 text-neutral-50 disabled:bg-neutral-300 disabled:text-neutral-500 disabled:cursor-not-allowed px-4 py-2 w-fit"
-						disabled={timeLeft > 0}
-					>
-						{attempts > 0 ? "Resend email" : "Verify email"}
-					</button>
-				</div>
-			)}
-			{currentUser && currentUser.emailVerified && (
-				<p>Email successfully verified!</p>
-			)}
+		<div className="flex flex-col grow max-w-screen-sm mx-auto w-full">
+			<H1>Verify your email</H1>
+			<Protected allowUnverified={true}>
+				{currentUser && !currentUser.emailVerified && (
+					<div className="flex flex-col gap-4">
+						<p>To complete your sign up, please verify your email</p>
+						{(timerStarted || attempts > 0) && (
+							<p className="text-neutral-800">
+								{"Verification link sent to "}
+								<span className="font-medium">{currentUser.email}</span>
+							</p>
+						)}
+						<p className="text-neutral-600">
+							{timerStarted && timeLeft > 0
+								? `You can retry in ${timeLeft / 1000} ${timeLeft / 1000 === 1 ? "second" : "seconds"}`
+								: null}
+						</p>
+						<button
+							onClick={sendVerification}
+							className="bg-primary-400 hover:bg-primary-500 text-neutral-50 disabled:bg-neutral-300 disabled:text-neutral-500 disabled:cursor-not-allowed px-4 py-2 w-fit"
+							disabled={timeLeft > 0}
+						>
+							{attempts > 0 ? "Resend" : "Verify"}
+						</button>
+					</div>
+				)}
+				{currentUser && currentUser.emailVerified && (
+					<p>Email successfully verified!</p>
+				)}
+			</Protected>
 		</div>
 	);
 }
