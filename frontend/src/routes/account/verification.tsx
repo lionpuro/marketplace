@@ -4,6 +4,7 @@ import { sendEmailVerification } from "firebase/auth";
 import { useAuth } from "#/auth/use-auth";
 import { H1 } from "#/components/headings";
 import { Protected } from "#/components/protected";
+import { toast } from "react-toastify";
 
 export const Route = createFileRoute("/account/verification")({
 	component: Verification,
@@ -32,6 +33,7 @@ function Verification() {
 			}
 		} catch (err) {
 			console.error(err);
+			toast.error("Failed to send verification link");
 			setTimeLeft(0);
 			setTimerStarted(false);
 		}

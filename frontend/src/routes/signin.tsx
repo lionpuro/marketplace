@@ -4,6 +4,7 @@ import Input from "#/components/input";
 import { signInWithEmail } from "#/auth/firebase";
 import { H1 } from "#/components/headings";
 import { createUser } from "#/auth";
+import { toast } from "react-toastify";
 
 export const Route = createFileRoute("/signin")({
 	component: SignIn,
@@ -22,6 +23,7 @@ function SignIn() {
 			navigate({ to: "/" });
 		} catch (err) {
 			console.error(err);
+			toast.error("Something went wrong");
 		}
 	};
 

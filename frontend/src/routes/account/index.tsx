@@ -6,6 +6,7 @@ import { H1 } from "#/components/headings";
 import { Modal } from "#/components/modal";
 import { IconPencil, IconTrash } from "#/components/icons";
 import { updateProfile } from "firebase/auth";
+import { toast } from "react-toastify";
 
 export const Route = createFileRoute("/account/")({
 	component: Component,
@@ -41,6 +42,7 @@ function Component() {
 			signOut();
 		} catch (err) {
 			console.error(err);
+			toast.error("Something went wrong");
 		}
 	};
 
@@ -79,6 +81,7 @@ function Component() {
 			}
 		} catch (err) {
 			console.error(err);
+			toast.error("Something went wrong");
 		}
 		setIsEditing(false);
 	};

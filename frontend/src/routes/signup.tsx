@@ -3,6 +3,7 @@ import { type FormEvent } from "react";
 import Input from "#/components/input";
 import { createUser, signup } from "#/auth";
 import { H1 } from "#/components/headings";
+import { toast } from "react-toastify";
 
 export const Route = createFileRoute("/signup")({
 	component: SignUp,
@@ -28,6 +29,7 @@ function SignUp() {
 			navigate({ to: "/" });
 		} catch (err) {
 			console.error(err);
+			toast.error("Something went wrong");
 		}
 	};
 

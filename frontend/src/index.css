@@ -28,6 +28,15 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-text-size-adjust: 100%;
+
+	--toastify-color-light: theme("colors.neutral.200");
+	--toastify-text-color-light: theme("colors.neutral.800");
+	--toastify-color-info: theme("colors.blue.500");
+	--toastify-color-success: #4caf50;
+	--toastify-color-warning: #ff9800;
+	--toastify-color-error: #f44336;
+	--toastify-toast-bd-radius: 0px;
+	--toastify-toast-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
 }
 
 html,
