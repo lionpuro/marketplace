@@ -17,7 +17,10 @@ export const Protected = ({
 	if (!currentUser) {
 		return (
 			<div className="flex justify-center items-center grow">
-				<Spinner size={36} className="text-neutral-400" />
+				<Spinner
+					size={36}
+					className="fixed left-1/2 top-1/2 -translate-x-[50%] -translate-y-[50%] text-neutral-400"
+				/>
 			</div>
 		);
 	}
