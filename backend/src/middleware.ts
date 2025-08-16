@@ -1,7 +1,10 @@
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import type { AuthUser } from "./types.js";
 
-type Middleware = (req: FastifyRequest, res: FastifyReply) => void;
+type Middleware = <T extends FastifyRequest, U extends FastifyReply>(
+	req: T,
+	res: U,
+) => void;
 
 export function requireAuth(server: FastifyInstance): Middleware {
 	return async (req, res) => {

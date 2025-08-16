@@ -1,57 +1,54 @@
-import type {
-	FastifyInstance,
-	FastifyPluginAsync,
-	FastifyRequest,
-} from "fastify";
+import type { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
+import { Type } from "@sinclair/typebox";
 import { repository } from "../repository/index.js";
 import { requireAuth } from "../middleware.js";
 
-const routes: FastifyPluginAsync = async (server: FastifyInstance) => {
+const ErrorResponseSchema = Type.Object({
+	message: Type.String(),
+});
+
+const routes: FastifyPluginAsyncTypebox = async (server) => {
 	server.route({
 		method: "POST",
 		url: "/users",
 		schema: {
-			body: {
-				type: "object",
-				properties: {
-					name: { type: "string" },
-				},
-				required: ["name"],
+			body: Type.Object({
+				name: Type.String(),
+			}),
+			response: {
+				201: Type.Null(),
+				500: ErrorResponseSchema,
 			},
 		},
 		preHandler: [requireAuth(server)],
-		handler: async (
-			req: FastifyRequest<{ Body: { name: string; email: string } }>,
-			res,
-		) => {
+		handler: async (req, res) => {
 			try {
 				const { id, email } = req.user;
 				const { name } = req.body;
 				await repository.createUser({ id: id, name: name, email: email });
 				return res.code(201).send();
 			} catch (err) {
-				return res.code(400).send();
+				return res.code(500).send({ message: "Internal server error" });
 			}
 		},
 	});
-	type UpdateUserRequest = FastifyRequest<{
-		Params: { id: string };
-		Body: { name: string };
-	}>;
+
 	server.route({
 		method: "PUT",
 		url: "/users/:id",
 		schema: {
-			body: {
-				type: "object",
-				properties: {
-					name: { type: "string" },
-				},
-				required: ["name"],
+			params: Type.Object({ id: Type.String() }),
+			body: Type.Object({
+				name: Type.String(),
+			}),
+			response: {
+				204: Type.Null(),
+				401: ErrorResponseSchema,
+				500: ErrorResponseSchema,
 			},
 		},
 		preHandler: [requireAuth(server)],
-		handler: async (req: UpdateUserRequest, res) => {
+		handler: async (req, res) => {
 			try {
 				const { id } = req.params;
 				if (id !== req.user.id) {
@@ -65,23 +62,24 @@ const routes: FastifyPluginAsync = async (server: FastifyInstance) => {
 				});
 				return res.code(204).send();
 			} catch (err) {
-				return res.code(500).send();
+				return res.code(500).send({ message: "Internal server error" });
 			}
 		},
 	});
+
 	server.route({
 		method: "DELETE",
 		url: "/users/:id",
 		schema: {
-			params: {
-				type: "object",
-				properties: {
-					id: { type: "string" },
-				},
+			params: Type.Object({ id: Type.String() }),
+			response: {
+				204: Type.Null(),
+				401: ErrorResponseSchema,
+				500: ErrorResponseSchema,
 			},
 		},
 		preHandler: [requireAuth(server)],
-		handler: async (req: FastifyRequest<{ Params: { id: string } }>, res) => {
+		handler: async (req, res) => {
 			try {
 				const { id } = req.params;
 				if (id !== req.user.id) {
