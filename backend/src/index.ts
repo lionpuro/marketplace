@@ -17,14 +17,14 @@ const server = Fastify({
 	logger: true,
 });
 
-server.register(cors, {
+await server.register(cors, {
 	origin: "http://localhost:5173",
 	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 });
 
-server.register(fastifyFirebase, firebaseJSON);
+await server.register(fastifyFirebase, firebaseJSON);
 
-server.register(AutoLoad, {
+await server.register(AutoLoad, {
 	dir: path.join(dirname(fileURLToPath(import.meta.url)), "routes"),
 });
 
