@@ -79,6 +79,7 @@ function Component() {
 			if (!res.ok) {
 				throw new Error("failed to update user");
 			}
+			toast.success("Account details updated successfully");
 		} catch (err) {
 			console.error(err);
 			toast.error("Something went wrong");
