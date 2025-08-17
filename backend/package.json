@@ -4,8 +4,8 @@
 	"version": "1.0.0",
 	"main": "index.js",
 	"scripts": {
-		"dev:node": "node --watch --env-file .env dist/index.js",
-		"dev:tsc": "tsc --watch",
+		"build": "tsc",
+		"dev": "tsx watch --env-file .env src/index.ts",
 		"db:generate": "drizzle-kit generate",
 		"db:migrate": "drizzle-kit migrate",
 		"format": "prettier --write ."
@@ -24,6 +24,7 @@
 		"@types/node": "^24.2.0",
 		"drizzle-kit": "^0.31.4",
 		"prettier": "^3.6.2",
+		"tsx": "^4.20.4",
 		"wrangler": "^4.28.1"
 	}
 }
