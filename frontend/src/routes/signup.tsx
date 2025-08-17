@@ -1,7 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import Input from "#/components/input";
-import { createUser, signup } from "#/auth";
 import { H1 } from "#/components/headings";
 import { toast } from "react-toastify";
 
@@ -9,8 +8,15 @@ export const Route = createFileRoute("/signup")({
 	component: SignUp,
 });
 
+type FormErrors = {
+	name?: string;
+	email?: string;
+	password?: string;
+};
+
 function SignUp() {
 	const navigate = useNavigate();
+	const [formErrors, setFormErrors] = useState<FormErrors>({});
 
 	const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -20,16 +26,47 @@ function SignUp() {
 		const password = form["password"].value;
 
 		try {
-			const cred = await signup(name, email, password);
-			await createUser(cred);
-			if (!cred.user.emailVerified) {
-				navigate({ to: "/account/verification" });
-				return;
+			const url = `${import.meta.env.VITE_API_BASE_URL}/users`;
+			const response = await fetch(url, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					name: name,
+					email: email,
+					password: password,
+				}),
+			});
+			const result = await response.json();
+
+			if (!response.ok) {
+				if (result.message) {
+					throw new Error(result.message);
+				}
+				throw new Error("Something went wrong");
 			}
-			navigate({ to: "/" });
+
+			toast.success("Account created");
+			navigate({ to: "/signin" });
 		} catch (err) {
-			console.error(err);
-			toast.error("Something went wrong");
+			if (err instanceof Error) {
+				const errors: FormErrors = {};
+				if (err.message === "auth/email-already-exists") {
+					errors.email = "Email already in use";
+				}
+				if (err.message.includes("body/name")) {
+					errors.name = "Invalid name";
+				}
+				if (err.message.includes("body/email")) {
+					errors.email = "Invalid email";
+				}
+				if (err.message.includes("body/password")) {
+					errors.password =
+						"Password must contain both upper and lowercase letters, at least one number and at least one special character";
+				}
+				setFormErrors(errors);
+			}
 		}
 	};
 
@@ -44,7 +81,11 @@ function SignUp() {
 					type="text"
 					placeholder="Name"
 					required
+					onInput={() => setFormErrors({ ...formErrors, name: undefined })}
 				/>
+				<span className="text-red-600/80 text-sm">
+					{formErrors.name && formErrors.name}
+				</span>
 				<label htmlFor="email">Email</label>
 				<Input
 					id="email"
@@ -52,7 +93,11 @@ function SignUp() {
 					type="email"
 					placeholder="Email"
 					required
+					onInput={() => setFormErrors({ ...formErrors, email: undefined })}
 				/>
+				<span className="text-red-600/90 text-sm">
+					{formErrors.email && formErrors.email}
+				</span>
 				<label htmlFor="password">Password</label>
 				<Input
 					id="password"
@@ -60,7 +105,11 @@ function SignUp() {
 					type="password"
 					placeholder="Password"
 					required
+					onInput={() => setFormErrors({ ...formErrors, password: undefined })}
 				/>
+				<span className="text-red-600/80 text-sm">
+					{formErrors.password && formErrors.password}
+				</span>
 				<button className="mt-4 bg-primary-400 hover:bg-primary-500 text-neutral-50 p-2 font-medium">
 					Sign up
 				</button>
