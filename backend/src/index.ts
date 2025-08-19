@@ -1,6 +1,5 @@
 import Fastify from "fastify";
 import AutoLoad from "@fastify/autoload";
-import cors from "@fastify/cors";
 import fastifyFirebase from "fastify-firebase";
 import type { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import path, { dirname } from "node:path";
@@ -17,11 +16,6 @@ declare module "fastify" {
 const server = Fastify({
 	logger: true,
 }).withTypeProvider<TypeBoxTypeProvider>();
-
-await server.register(cors, {
-	origin: "http://localhost:5173",
-	methods: "GET,PUT,PATCH,POST,DELETE",
-});
 
 await server.register(fastifyFirebase, firebaseJSON);
 
