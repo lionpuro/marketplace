@@ -14,6 +14,16 @@ export async function updateUser(user: User): Promise<void> {
 		.where(eq(schema.users.id, user.id));
 }
 
+export async function upsertUser(user: User): Promise<void> {
+	await db
+		.insert(schema.users)
+		.values(user)
+		.onConflictDoUpdate({
+			target: schema.users.id,
+			set: { name: user.name, email: user.email },
+		});
+}
+
 export async function deleteUser(id: string): Promise<User | undefined> {
 	const [result] = await db
 		.delete(schema.users)

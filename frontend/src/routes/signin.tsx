@@ -18,6 +18,19 @@ function SignIn() {
 		const password = form["password"].value;
 		try {
 			const cred = await signInWithEmail(email, password);
+			const token = await cred.user.getIdToken();
+			const url = `${import.meta.env.VITE_API_BASE_URL}/users/${cred.user.uid}`;
+			const res = await fetch(url, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: "Bearer " + token,
+				},
+				body: JSON.stringify({ name: cred.user.displayName || email }),
+			});
+			if (!res.ok) {
+				throw new Error("Something went wrong");
+			}
 			if (!cred.user.emailVerified) {
 				return navigate({ to: "/account/verification" });
 			}

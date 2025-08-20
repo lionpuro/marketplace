@@ -37,7 +37,6 @@ const routes: FastifyPluginAsyncTypebox = async (server) => {
 				return res.code(201).send({ id: user.uid });
 			} catch (err) {
 				if (err instanceof FirebaseAuthError) {
-					console.log(err);
 					switch (err.code) {
 						case "auth/email-already-exists":
 							return res.code(400).send({ message: err.code });
@@ -72,7 +71,7 @@ const routes: FastifyPluginAsyncTypebox = async (server) => {
 					return res.code(401).send({ message: "Unauthorized" });
 				}
 				const { name } = req.body;
-				await repository.updateUser({
+				await repository.upsertUser({
 					id: id,
 					name: name,
 					email: req.user.email,
