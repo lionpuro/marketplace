@@ -26,7 +26,7 @@ function SignUp() {
 		const password = form["password"].value;
 
 		try {
-			const url = `${import.meta.env.VITE_API_BASE_URL}/users`;
+			const url = `${import.meta.env.VITE_BACKEND_URL}/users`;
 			const response = await fetch(url, {
 				method: "POST",
 				headers: {

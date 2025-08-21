@@ -28,7 +28,7 @@ function Component() {
 		}
 		try {
 			const token = await currentUser.getIdToken();
-			const url = `${import.meta.env.VITE_API_BASE_URL}/users/${currentUser.uid}`;
+			const url = `${import.meta.env.VITE_BACKEND_URL}/users/${currentUser.uid}`;
 			const response = await fetch(url, {
 				method: "DELETE",
 				headers: {
@@ -64,7 +64,7 @@ function Component() {
 		}
 		try {
 			const token = await currentUser.getIdToken();
-			const url = `${import.meta.env.VITE_API_BASE_URL}/users/${currentUser.uid}`;
+			const url = `${import.meta.env.VITE_BACKEND_URL}/users/${currentUser.uid}`;
 			const [res] = await Promise.all([
 				fetch(url, {
 					method: "PUT",

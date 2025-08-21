@@ -19,7 +19,7 @@ function SignIn() {
 		try {
 			const cred = await signInWithEmail(email, password);
 			const token = await cred.user.getIdToken();
-			const url = `${import.meta.env.VITE_API_BASE_URL}/users/${cred.user.uid}`;
+			const url = `${import.meta.env.VITE_BACKEND_URL}/users/${cred.user.uid}`;
 			const res = await fetch(url, {
 				method: "PUT",
 				headers: {
