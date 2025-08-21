@@ -1,6 +1,6 @@
 import type { InferSelectModel } from "drizzle-orm";
-import type * as schema from "./db/schema.js";
 import type { SqliteRemoteDatabase } from "drizzle-orm/sqlite-proxy";
+import type * as schema from "./database/schema.js";
 import type { repository } from "./repository/index.js";
 
 export type User = InferSelectModel<typeof schema.users>;

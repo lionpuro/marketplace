@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
-import { db } from "../db/index.js";
-import * as schema from "../db/schema.js";
+import { db } from "../database/index.js";
+import * as schema from "../database/schema.js";
 import type { User } from "../types.js";
 
 export async function createUser(user: User): Promise<void> {
