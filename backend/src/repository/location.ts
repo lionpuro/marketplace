@@ -10,10 +10,6 @@ export async function newLocationRepository() {
 				.all();
 			return rows as Country[];
 		},
-		getCountriesAll: async () => {
-			const rows = db.prepare("SELECT * FROM countries").all();
-			return rows;
-		},
 		getStatesByCountry: async (code: string) => {
 			const sql = `
 			SELECT
