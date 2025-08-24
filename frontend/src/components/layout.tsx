@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { useAuth } from "#/auth/use-auth";
-import { IconSignOut, IconUser } from "#/components/icons";
+import { IconPlus, IconSignOut, IconUser } from "#/components/icons";
 
 const Layout = ({ children }: { children?: ReactNode }) => {
 	const { isAuthenticated, signOut } = useAuth();
@@ -9,14 +9,11 @@ const Layout = ({ children }: { children?: ReactNode }) => {
 		<>
 			<div className="flex flex-col min-h-full">
 				<header className="flex border-b border-neutral-200">
-					<nav className="flex items-center p-3 w-full">
-						<Link
-							to="/"
-							className="text-neutral-900 font-semibold text-lg px-3"
-						>
+					<nav className="flex items-center p-3 w-full px-6">
+						<Link to="/" className="text-neutral-900 font-semibold text-lg">
 							marketplace
 						</Link>
-						<div className="ml-auto flex items-center gap-2">
+						<div className="ml-auto flex items-center gap-3">
 							{!isAuthenticated ? (
 								<>
 									<Link
@@ -35,6 +32,13 @@ const Layout = ({ children }: { children?: ReactNode }) => {
 							) : (
 								<>
 									<Link
+										to="/listings/new"
+										className="flex items-center gap-1 text-primary-700 p-1.5"
+									>
+										<IconPlus className="text-lg" />
+										New listing
+									</Link>
+									<Link
 										to="/account"
 										className="flex items-center gap-1 text-primary-700 p-1.5"
 									>
@@ -43,7 +47,7 @@ const Layout = ({ children }: { children?: ReactNode }) => {
 									</Link>
 									<button
 										onClick={signOut}
-										className="flex items-center gap-1 text-red-600/90 py-1.5 px-4"
+										className="flex items-center gap-1 text-red-600/90 p-1.5"
 									>
 										<IconSignOut className="text-lg" />
 										Sign out

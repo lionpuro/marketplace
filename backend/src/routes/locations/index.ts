@@ -1,6 +1,7 @@
 import type { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { Type } from "@sinclair/typebox";
 import { locationRepository } from "../../repository/location.js";
+import { ISO2Schema } from "../../schemas/location.js";
 
 const ErrorResponseSchema = Type.Object({
 	message: Type.String(),
@@ -37,11 +38,6 @@ const CitiesResponseSchema = Type.Array(
 		state_code: Type.String(),
 	}),
 );
-
-const ISO2Schema = Type.String({
-	minLength: 1,
-	maxLength: 3,
-});
 
 const routes: FastifyPluginAsyncTypebox = async (server) => {
 	server.route({

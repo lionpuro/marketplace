@@ -1,11 +1,7 @@
-import type { InferSelectModel } from "drizzle-orm";
+import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
 import type { SqliteRemoteDatabase } from "drizzle-orm/sqlite-proxy";
 import type * as schema from "./database/schema.js";
 import type { repository } from "./repository/index.js";
-
-export type User = InferSelectModel<typeof schema.users>;
-
-export type Database = SqliteRemoteDatabase<typeof schema>;
 
 export type Repository = typeof repository;
 
@@ -14,6 +10,21 @@ export type AuthUser = {
 	email: string;
 	email_verified: boolean;
 };
+
+export type Database = SqliteRemoteDatabase<typeof schema>;
+
+export type User = InferSelectModel<typeof schema.users>;
+
+export type Listing = InferSelectModel<typeof schema.listings>;
+
+export type NewListing = Omit<
+	InferInsertModel<typeof schema.listings>,
+	"id" | "deleted_at" | "created_at" | "updated_at"
+>;
+
+export type Category = InferSelectModel<typeof schema.categories>;
+
+export type ParentCategory = Category & { subcategories: Category[] };
 
 export type Country = {
 	id: number;

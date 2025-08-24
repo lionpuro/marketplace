@@ -1,7 +1,9 @@
 {
 	"name": "backend",
+	"private": true,
 	"type": "module",
 	"version": "1.0.0",
+	"types": "./src/types.ts",
 	"main": "index.js",
 	"scripts": {
 		"build": "tsc",

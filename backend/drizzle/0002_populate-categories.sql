@@ -1,0 +1,10 @@
+INSERT INTO "categories" ("name") VALUES('parts and accessories');
+INSERT INTO "categories" ("name") VALUES('cables');
+INSERT INTO "categories" ("name") VALUES('turntables');
+INSERT INTO "categories" ("name") VALUES('headphones');
+INSERT INTO "categories" ("name") VALUES('speakers');
+INSERT INTO "categories" ("name") VALUES('amplifiers');
+INSERT INTO "categories" ("name") VALUES('tape decks');
+INSERT INTO "categories" ("name") VALUES('preamps');
+INSERT INTO "categories" ("name") VALUES('receivers');
+INSERT INTO "categories" ("name") VALUES('equalizers');
