@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import type { City, Country, State } from "backend";
-import { queryKeys } from "#/constants";
+import { queryKeys } from "#/query/keys";
 
 const requestOptions: RequestInit = {
 	method: "GET",

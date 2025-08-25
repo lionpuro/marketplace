@@ -1,4 +1,5 @@
 export const queryKeys = {
+	listings: "listings",
 	categories: "categories",
 	countries: "countries",
 	states: "states",

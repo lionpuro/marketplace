@@ -1,15 +1,12 @@
-import { toast } from "react-toastify";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import type { Category } from "backend";
 import FormError from "#/components/form-error";
 import { H1 } from "#/components/headings";
 import Input from "#/components/input";
 import { Protected } from "#/components/protected";
 import { useLocation } from "#/hooks/use-location";
-import { queryKeys } from "#/constants";
-import { useAuth } from "#/auth/use-auth";
+import { useCreateListing } from "#/query/listings";
+import { useCategories } from "#/query/categories";
 
 export const Route = createFileRoute("/listings/new")({
 	component: Component,
@@ -26,56 +23,15 @@ type Inputs = {
 };
 
 function Component() {
-	const navigate = useNavigate();
-	const { currentUser } = useAuth();
 	const {
 		location,
 		setLocation,
 		data: { countries, states, cities },
 	} = useLocation();
 
-	const { data: categories, isLoading: loadingCategories } = useQuery({
-		queryFn: async () => {
-			const response = await fetch(
-				`${import.meta.env.VITE_BACKEND_URL}/categories`,
-				{
-					method: "GET",
-					headers: { "Content-Type": "application/json" },
-				},
-			);
-			if (!response.ok) {
-				throw new Error(response.statusText);
-			}
-			const result: Category[] = await response.json();
-			return result;
-		},
-		queryKey: [queryKeys.categories],
-	});
+	const { data: categories, isLoading: loadingCategories } = useCategories();
 
-	const { mutate, isPending } = useMutation({
-		mutationFn: async (newListing: Inputs) => {
-			if (!currentUser) {
-				throw new Error("Failed to create listing");
-			}
-			const token = await currentUser.getIdToken();
-			const response = await fetch(
-				`${import.meta.env.VITE_BACKEND_URL}/listings`,
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: "Bearer " + token,
-					},
-					body: JSON.stringify(newListing),
-				},
-			);
-			if (!response.ok) {
-				throw new Error(response.statusText);
-			}
-		},
-		onSuccess: () => navigate({ to: "/" }),
-		onError: (err) => toast.error(err.message),
-	});
+	const { mutate, isPending } = useCreateListing();
 
 	const {
 		register,
