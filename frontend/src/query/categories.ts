@@ -19,6 +19,7 @@ export function useCategories() {
 			return result;
 		},
 		queryKey: [queryKeys.categories],
+		staleTime: Infinity,
 	});
 	return query;
 }
