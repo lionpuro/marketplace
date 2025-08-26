@@ -2,6 +2,8 @@ import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
 import type { SqliteRemoteDatabase } from "drizzle-orm/sqlite-proxy";
 import type * as schema from "./database/schema.js";
 import type { repository } from "./repository/index.js";
+import type { Static } from "@sinclair/typebox";
+import type { NewListingBodySchema } from "./schemas/listing.js";
 
 export type Repository = typeof repository;
 
@@ -21,6 +23,8 @@ export type NewListing = Omit<
 	InferInsertModel<typeof schema.listings>,
 	"id" | "deleted_at" | "created_at" | "updated_at"
 >;
+
+export type NewListingBody = Static<typeof NewListingBodySchema>;
 
 export type Category = InferSelectModel<typeof schema.categories>;
 

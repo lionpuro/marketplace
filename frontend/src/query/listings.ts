@@ -2,22 +2,13 @@ import { useAuth } from "#/auth/use-auth";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "react-toastify";
-
-type Inputs = {
-	category: number;
-	title: string;
-	description?: string;
-	price: number;
-	country: string;
-	state?: string;
-	city?: string;
-};
+import type { NewListingBody } from "backend";
 
 export function useCreateListing() {
 	const navigate = useNavigate();
 	const { currentUser } = useAuth();
 	const mutation = useMutation({
-		mutationFn: async (newListing: Inputs) => {
+		mutationFn: async (newListing: NewListingBody) => {
 			if (!currentUser) {
 				throw new Error("Failed to create listing");
 			}

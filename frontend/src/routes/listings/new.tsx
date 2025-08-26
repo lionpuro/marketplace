@@ -7,6 +7,7 @@ import { Protected } from "#/components/protected";
 import { useLocation } from "#/hooks/use-location";
 import { useCreateListing } from "#/query/listings";
 import { useCategories } from "#/query/categories";
+import type { NewListingBody } from "backend";
 
 export const Route = createFileRoute("/listings/new")({
 	component: Component,
@@ -41,7 +42,16 @@ function Component() {
 
 	const onSubmit: SubmitHandler<Inputs> = (data) => {
 		data.price = Math.trunc(data.price * 100);
-		mutate(data);
+		const body: NewListingBody = {
+			category_id: data.category,
+			title: data.title,
+			description: data.description,
+			price: data.price,
+			country_code: data.country,
+			state_code: data.state,
+			city: data.city,
+		};
+		mutate(body);
 	};
 
 	return (

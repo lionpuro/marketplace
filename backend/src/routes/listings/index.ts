@@ -23,12 +23,12 @@ const routes: FastifyPluginAsyncTypebox = async (server) => {
 				const b = req.body;
 				const listing: NewListing = {
 					seller_id: req.user.id,
-					category_id: b.category,
+					category_id: b.category_id,
 					title: b.title,
 					description: b.description,
 					price: b.price,
-					country_code: b.country,
-					state_code: b.state,
+					country_code: b.country_code,
+					state_code: b.state_code,
 					city: b.city,
 				};
 				await repository.createListing(listing);
