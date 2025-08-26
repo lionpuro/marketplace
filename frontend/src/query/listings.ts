@@ -1,11 +1,11 @@
 import { useAuth } from "#/auth/use-auth";
-import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import type { NewListingBody } from "backend";
+import { queryKeys } from "./keys";
 
 export function useCreateListing() {
-	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 	const { currentUser } = useAuth();
 	const mutation = useMutation({
 		mutationFn: async (newListing: NewListingBody) => {
@@ -28,7 +28,9 @@ export function useCreateListing() {
 				throw new Error(response.statusText);
 			}
 		},
-		onSuccess: () => navigate({ to: "/" }),
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({ queryKey: [queryKeys.listings] });
+		},
 		onError: (err) => toast.error(err.message),
 	});
 	return mutation;

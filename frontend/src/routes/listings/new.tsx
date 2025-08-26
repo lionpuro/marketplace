@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import FormError from "#/components/form-error";
 import { H1 } from "#/components/headings";
@@ -32,7 +32,7 @@ function Component() {
 
 	const { data: categories, isLoading: loadingCategories } = useCategories();
 
-	const { mutate, isPending } = useCreateListing();
+	const { mutate, isPending, isSuccess } = useCreateListing();
 
 	const {
 		register,
@@ -54,6 +54,9 @@ function Component() {
 		mutate(body);
 	};
 
+	if (isSuccess) {
+		return <Navigate to="/" />;
+	}
 	return (
 		<Protected>
 			<div className="flex flex-col grow w-full max-w-screen-sm mx-auto">
