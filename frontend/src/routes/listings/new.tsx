@@ -25,21 +25,22 @@ type Inputs = {
 };
 
 function Component() {
-	const {
-		location,
-		setLocation,
-		data: { countries, states, cities },
-	} = useLocation();
-
 	const { data: categories, isLoading: loadingCategories } = useCategories();
 
-	const { mutate, isPending, isSuccess } = useCreateListing();
+	const { mutate: createListing, isPending, isSuccess } = useCreateListing();
 
 	const {
 		register,
 		handleSubmit,
+		watch,
 		formState: { errors, isValid },
-	} = useForm<Inputs>();
+		setValue,
+	} = useForm<Inputs>({ mode: "onChange" });
+	const [country, state, city] = watch(["country", "state", "city"]);
+
+	const {
+		data: { countries, states, cities },
+	} = useLocation({ country, state, city });
 
 	const onSubmit: SubmitHandler<Inputs> = (data) => {
 		data.price = Math.trunc(data.price * 100);
@@ -52,7 +53,7 @@ function Component() {
 			state_code: data.state,
 			city: data.city,
 		};
-		mutate(body);
+		createListing(body);
 	};
 
 	if (isSuccess) {
@@ -67,12 +68,12 @@ function Component() {
 					<Select
 						{...register("category", {
 							valueAsNumber: true,
-							disabled: loadingCategories,
 							required: "Required",
+							validate: (val) => (isNaN(val) ? "Required" : true),
 						})}
 					>
-						<option disabled value="">
-							--
+						<option value="">
+							{loadingCategories ? "--" : "Select category"}
 						</option>
 						{categories?.map((c) => (
 							<option key={c.id} value={c.id}>
@@ -83,7 +84,15 @@ function Component() {
 					<FormError message={errors.category?.message} />
 					<label htmlFor="title">Title</label>
 					<Input
-						{...register("title", { required: "Required" })}
+						{...register("title", {
+							required: "Required",
+							validate: (val) => {
+								if (val.replaceAll(" ", "") === "") {
+									return "Required";
+								}
+								return true;
+							},
+						})}
 						className="bg-white"
 					/>
 					<FormError message={errors.title?.message} />
@@ -114,15 +123,15 @@ function Component() {
 					<label htmlFor="country">Country</label>
 					<Select
 						{...register("country", {
-							value: location.country ?? "",
-							onChange: (e) => setLocation({ country: e.target.value }),
+							onChange: () => {
+								setValue("state", undefined);
+								setValue("city", undefined);
+							},
 							disabled: !countries,
 							required: "Required",
 						})}
 					>
-						<option disabled value="">
-							--
-						</option>
+						<option value="">--</option>
 						{countries?.map((country) => (
 							<option key={country.id} value={country.iso2}>
 								{country.name}
@@ -133,13 +142,8 @@ function Component() {
 					<label htmlFor="state">State</label>
 					<Select
 						{...register("state", {
-							value: location.state ?? "",
-							onChange: (e) => {
-								setLocation({
-									...location,
-									state: e.target.value,
-									city: undefined,
-								});
+							onChange: () => {
+								setValue("city", undefined);
 							},
 							disabled: !states || states.length === 0,
 							required: states && states.length > 0 ? "Required" : false,
@@ -158,9 +162,6 @@ function Component() {
 					<label htmlFor="city">City</label>
 					<Select
 						{...register("city", {
-							value: location.city ?? "",
-							onChange: (e) =>
-								setLocation({ ...location, city: e.target.value }),
 							required: cities && cities.length > 0 ? "Required" : false,
 							disabled: !cities || cities.length === 0,
 						})}

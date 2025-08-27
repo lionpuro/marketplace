@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
 import type { City, Country, State } from "backend";
 import { queryKeys } from "#/query/keys";
 
@@ -8,13 +7,13 @@ const requestOptions: RequestInit = {
 	headers: { "Content-Type": "application/json" },
 };
 
-export function useLocation() {
-	const [location, setLocation] = useState<{
-		country?: string;
-		state?: string;
-		city?: string;
-	}>({});
+type Location = {
+	country?: string;
+	state?: string;
+	city?: string;
+};
 
+export function useLocation(selected: Location) {
 	const { data: countries, error: countriesError } = useQuery({
 		queryFn: async () => {
 			const url = `${import.meta.env.VITE_BACKEND_URL}/locations/countries`;
@@ -30,7 +29,7 @@ export function useLocation() {
 
 	const { data: states, error: statesError } = useQuery({
 		queryFn: async () => {
-			const url = `${import.meta.env.VITE_BACKEND_URL}/locations/countries/${location.country}/states`;
+			const url = `${import.meta.env.VITE_BACKEND_URL}/locations/countries/${selected.country}/states`;
 			const res = await fetch(url, requestOptions);
 			if (!res.ok) {
 				throw new Error(res.statusText);
@@ -38,13 +37,13 @@ export function useLocation() {
 			const states: State[] = await res.json();
 			return states;
 		},
-		queryKey: [location.country, queryKeys.states],
-		enabled: !!location.country,
+		queryKey: [selected.country, queryKeys.states],
+		enabled: !!selected.country,
 	});
 
 	const { data: cities, error: citiesError } = useQuery({
 		queryFn: async () => {
-			const url = `${import.meta.env.VITE_BACKEND_URL}/locations/countries/${location.country}/states/${location.state}/cities`;
+			const url = `${import.meta.env.VITE_BACKEND_URL}/locations/countries/${selected.country}/states/${selected.state}/cities`;
 			const res = await fetch(url, requestOptions);
 			if (!res.ok) {
 				throw new Error(res.statusText);
@@ -53,17 +52,15 @@ export function useLocation() {
 			return cities;
 		},
 		queryKey: [
-			location.country,
+			selected.country,
 			queryKeys.states,
-			location.state,
+			selected.state,
 			queryKeys.cities,
 		],
-		enabled: !!location.country && !!location.state,
+		enabled: !!selected.country && !!selected.state,
 	});
 
 	return {
-		location,
-		setLocation,
 		data: { countries, states, cities },
 		errors: {
 			countries: countriesError,
