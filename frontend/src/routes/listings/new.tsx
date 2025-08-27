@@ -8,6 +8,7 @@ import { useLocation } from "#/hooks/use-location";
 import { useCreateListing } from "#/query/listings";
 import { useCategories } from "#/query/categories";
 import type { NewListingBody } from "backend";
+import { Select } from "#/components/select";
 
 export const Route = createFileRoute("/listings/new")({
 	component: Component,
@@ -63,14 +64,12 @@ function Component() {
 				<H1>New listing</H1>
 				<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
 					<label htmlFor="category">Category</label>
-					<select
+					<Select
 						{...register("category", {
 							valueAsNumber: true,
 							disabled: loadingCategories,
 							required: "Required",
 						})}
-						id="country"
-						className="bg-white disabled:bg-neutral-200/50 px-3 py-1.5 pr-3 border-r-5 border-transparent outline outline-neutral-200 focus-within:outline-2 focus-within:-outline-offset-1 focus-within:outline-focus"
 					>
 						<option disabled value="">
 							--
@@ -80,7 +79,7 @@ function Component() {
 								{c.name[0].toUpperCase() + c.name.slice(1)}
 							</option>
 						))}
-					</select>
+					</Select>
 					<FormError message={errors.category?.message} />
 					<label htmlFor="title">Title</label>
 					<Input
@@ -113,15 +112,13 @@ function Component() {
 					</span>
 					<FormError message={errors.price?.message} />
 					<label htmlFor="country">Country</label>
-					<select
+					<Select
 						{...register("country", {
 							value: location.country ?? "",
 							onChange: (e) => setLocation({ country: e.target.value }),
 							disabled: !countries,
 							required: "Required",
 						})}
-						id="country"
-						className="bg-white disabled:bg-neutral-200/50 px-3 py-1.5 pr-3 border-r-5 border-transparent outline outline-neutral-200 focus-within:outline-2 focus-within:-outline-offset-1 focus-within:outline-focus"
 					>
 						<option disabled value="">
 							--
@@ -131,23 +128,22 @@ function Component() {
 								{country.name}
 							</option>
 						))}
-					</select>
+					</Select>
 					<FormError message={errors.country?.message} />
 					<label htmlFor="state">State</label>
-					<select
+					<Select
 						{...register("state", {
 							value: location.state ?? "",
-							onChange: (e) =>
+							onChange: (e) => {
 								setLocation({
 									...location,
 									state: e.target.value,
 									city: undefined,
-								}),
+								});
+							},
 							disabled: !states || states.length === 0,
 							required: states && states.length > 0 ? "Required" : false,
 						})}
-						id="state"
-						className="bg-white disabled:bg-neutral-200/50 px-3 py-1.5 pr-3 border-r-5 border-transparent outline outline-neutral-200 focus-within:outline-2 focus-within:-outline-offset-1 focus-within:outline-focus"
 					>
 						<option value="">
 							{states && states.length === 0 ? "No states" : "--"}
@@ -157,10 +153,10 @@ function Component() {
 								{state.name}
 							</option>
 						))}
-					</select>
+					</Select>
 					<FormError message={errors.state?.message} />
 					<label htmlFor="city">City</label>
-					<select
+					<Select
 						{...register("city", {
 							value: location.city ?? "",
 							onChange: (e) =>
@@ -168,8 +164,6 @@ function Component() {
 							required: cities && cities.length > 0 ? "Required" : false,
 							disabled: !cities || cities.length === 0,
 						})}
-						id="city"
-						className="bg-white disabled:bg-neutral-200/50 px-3 py-1.5 pr-3 border-r-5 border-transparent outline outline-neutral-200 focus-within:outline-2 focus-within:-outline-offset-1 focus-within:outline-focus"
 					>
 						<option value="">
 							{(states && states.length === 0) ||
@@ -182,7 +176,7 @@ function Component() {
 								{city.name}
 							</option>
 						))}
-					</select>
+					</Select>
 					<FormError message={errors.city?.message} />
 					<button
 						type="submit"
