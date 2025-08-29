@@ -26,7 +26,6 @@ type Inputs = {
 
 function Component() {
 	const { data: categories, isLoading: loadingCategories } = useCategories();
-
 	const { mutate: createListing, isPending, isSuccess } = useCreateListing();
 
 	const {

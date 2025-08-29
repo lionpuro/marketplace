@@ -1,6 +1,12 @@
 import { createUser, deleteUser, updateUser, upsertUser } from "./user.js";
 import { getCategories } from "./category.js";
-import { createListing } from "./listing.js";
+import {
+	createListing,
+	deleteListing,
+	findListings,
+	findListing,
+	updateListing,
+} from "./listing.js";
 
 export const repository = {
 	createUser,
@@ -8,5 +14,9 @@ export const repository = {
 	upsertUser,
 	deleteUser,
 	getCategories,
+	findListings,
+	findListing,
 	createListing,
+	updateListing,
+	deleteListing,
 };

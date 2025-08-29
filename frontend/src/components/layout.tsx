@@ -8,8 +8,8 @@ const Layout = ({ children }: { children?: ReactNode }) => {
 	return (
 		<>
 			<div className="flex flex-col min-h-full">
-				<header className="flex border-b border-neutral-200">
-					<nav className="flex items-center p-3 w-full px-6">
+				<header className="flex flex-col border-b border-neutral-200">
+					<nav className="flex items-center p-3 px-6">
 						<Link to="/" className="text-neutral-900 font-semibold text-lg">
 							marketplace
 						</Link>
@@ -37,6 +37,12 @@ const Layout = ({ children }: { children?: ReactNode }) => {
 									>
 										<IconPlus className="text-lg" />
 										New listing
+									</Link>
+									<Link
+										to="/my-listings"
+										className="flex items-center gap-1 text-primary-700 p-1.5"
+									>
+										My listings
 									</Link>
 									<Link
 										to="/account"

@@ -3,7 +3,13 @@ import type { SqliteRemoteDatabase } from "drizzle-orm/sqlite-proxy";
 import type * as schema from "./database/schema.js";
 import type { repository } from "./repository/index.js";
 import type { Static } from "@sinclair/typebox";
-import type { NewListingBodySchema } from "./schemas/listing.js";
+import type {
+	ListingSchema,
+	ListingsParamsSchema,
+	ListingsSortOption,
+	NewListingBodySchema,
+	UpdateListingBodySchema,
+} from "./schemas/listing.js";
 
 export type Repository = typeof repository;
 
@@ -17,7 +23,9 @@ export type Database = SqliteRemoteDatabase<typeof schema>;
 
 export type User = InferSelectModel<typeof schema.users>;
 
-export type Listing = InferSelectModel<typeof schema.listings>;
+export type ListingsTable = InferSelectModel<typeof schema.listings>;
+
+export type Listing = Static<typeof ListingSchema>;
 
 export type NewListing = Omit<
 	InferInsertModel<typeof schema.listings>,
@@ -25,6 +33,17 @@ export type NewListing = Omit<
 >;
 
 export type NewListingBody = Static<typeof NewListingBodySchema>;
+
+export type ListingUpdate = Omit<
+	InferInsertModel<typeof schema.listings>,
+	"id" | "seller_id" | "deleted_at" | "created_at" | "updated_at"
+>;
+
+export type UpdateListingBody = Static<typeof UpdateListingBodySchema>;
+
+export type ListingsParams = Static<typeof ListingsParamsSchema>;
+
+export type ListingsSortOption = Static<typeof ListingsSortOption>;
 
 export type Category = InferSelectModel<typeof schema.categories>;
 
