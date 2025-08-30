@@ -1,5 +1,4 @@
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
-import type { SqliteRemoteDatabase } from "drizzle-orm/sqlite-proxy";
 import type * as schema from "./database/schema.js";
 import type { repository } from "./repository/index.js";
 import type { Static } from "@sinclair/typebox";
@@ -10,6 +9,7 @@ import type {
 	NewListingBodySchema,
 	UpdateListingBodySchema,
 } from "./schemas/listing.js";
+import type { db } from "./database/index.js";
 
 export type Repository = typeof repository;
 
@@ -19,7 +19,7 @@ export type AuthUser = {
 	email_verified: boolean;
 };
 
-export type Database = SqliteRemoteDatabase<typeof schema>;
+export type Database = typeof db;
 
 export type User = InferSelectModel<typeof schema.users>;
 

@@ -21,14 +21,15 @@
 		"fastify": "^5.4.0",
 		"fastify-firebase": "^2.0.1",
 		"firebase-admin": "^13.4.0",
+		"pg": "^8.16.3",
 		"typescript": "^5.9.2"
 	},
 	"devDependencies": {
 		"@types/better-sqlite3": "^7.6.13",
 		"@types/node": "^24.2.0",
+		"@types/pg": "^8.15.5",
 		"drizzle-kit": "^0.31.4",
 		"prettier": "^3.6.2",
-		"tsx": "^4.20.4",
-		"wrangler": "^4.28.1"
+		"tsx": "^4.20.4"
 	}
 }

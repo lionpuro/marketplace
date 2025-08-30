@@ -70,8 +70,7 @@ export async function findListings(params: ListingsParams): Promise<Listing[]> {
 				params.city ? eq(s.listings.city, params.city) : undefined,
 			),
 		)
-		.orderBy(...orderBy)
-		.all();
+		.orderBy(...orderBy);
 	return rows;
 }
 
@@ -110,8 +109,7 @@ export async function findListing(
 		})
 		.from(s.listings)
 		.innerJoin(s.categories, eq(s.listings.category_id, s.categories.id))
-		.where(eq(s.listings.id, listingID))
-		.all();
+		.where(eq(s.listings.id, listingID));
 	return row;
 }
 

@@ -1,13 +1,15 @@
 import { defineConfig } from "drizzle-kit";
 
 export default defineConfig({
-	out: "./drizzle",
+	dialect: "postgresql",
 	schema: "./src/database/schema.ts",
-	dialect: "sqlite",
-	driver: "d1-http",
+	out: "./drizzle/migrations",
 	dbCredentials: {
-		accountId: process.env.CLOUDFLARE_ACCOUNT_ID!,
-		databaseId: process.env.CLOUDFLARE_DATABASE_ID!,
-		token: process.env.CLOUDFLARE_D1_TOKEN!,
+		user: process.env.POSTGRES_USER!,
+		password: process.env.POSTGRES_PASSWORD!,
+		database: process.env.POSTGRES_DB!,
+		host: "localhost",
+		port: Number(process.env.POSTGRES_PORT!),
+		ssl: false,
 	},
 });

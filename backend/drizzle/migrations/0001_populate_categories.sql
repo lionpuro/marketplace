@@ -8,3 +8,4 @@ INSERT INTO "categories" ("name") VALUES('tape decks');
 INSERT INTO "categories" ("name") VALUES('preamps');
 INSERT INTO "categories" ("name") VALUES('receivers');
 INSERT INTO "categories" ("name") VALUES('equalizers');
+INSERT INTO "categories" ("name") VALUES('microphones');
