@@ -9,12 +9,20 @@ export const ListingSchema = Type.Object({
 	title: Type.String(),
 	description: Nullable(Type.String()),
 	price: Type.Number(),
-	country_code: ISO2Schema,
-	state_code: Nullable(ISO2Schema),
-	city: Nullable(Type.Number()),
 	created_at: Type.String(),
 	updated_at: Type.String(),
 	category: CategorySchema,
+	location: Type.Object({
+		country: Nullable(Type.String()),
+		country_id: Nullable(Type.Number()),
+		country_code: Nullable(Type.String()),
+		country_emoji: Nullable(Type.String()),
+		state: Nullable(Type.String()),
+		state_id: Nullable(Type.Number()),
+		state_code: Nullable(Type.String()),
+		city: Nullable(Type.String()),
+		city_id: Nullable(Type.Number()),
+	}),
 });
 
 export const ListingsSortOption = Type.Union([

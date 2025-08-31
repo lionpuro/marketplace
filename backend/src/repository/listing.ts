@@ -29,9 +29,6 @@ export async function findListings(params: ListingsParams): Promise<Listing[]> {
 		title,
 		description,
 		price,
-		country_code,
-		state_code,
-		city,
 		created_at,
 		updated_at,
 	} = s.listings;
@@ -42,9 +39,6 @@ export async function findListings(params: ListingsParams): Promise<Listing[]> {
 			title,
 			description,
 			price,
-			country_code,
-			state_code,
-			city,
 			created_at,
 			updated_at,
 			category: {
@@ -52,9 +46,29 @@ export async function findListings(params: ListingsParams): Promise<Listing[]> {
 				name: aliasColumn(s.categories.name, "c_name"),
 				parent_id: aliasColumn(s.categories.parent_id, "c_parent_id"),
 			},
+			location: {
+				country: s.countries.name,
+				country_id: s.countries.id,
+				country_code: s.listings.country_code,
+				country_emoji: s.countries.emoji,
+				state: s.states.name,
+				state_id: s.states.id,
+				state_code: s.listings.state_code,
+				city: s.cities.name,
+				city_id: s.cities.id,
+			},
 		})
 		.from(s.listings)
 		.innerJoin(s.categories, eq(s.listings.category_id, s.categories.id))
+		.leftJoin(s.countries, eq(s.listings.country_code, s.countries.iso2))
+		.leftJoin(
+			s.states,
+			and(
+				eq(s.listings.state_code, s.states.iso2),
+				eq(s.listings.country_code, s.states.country_code),
+			),
+		)
+		.leftJoin(s.cities, eq(s.listings.city, s.cities.id))
 		.where(
 			and(
 				params.seller ? eq(s.listings.seller_id, params.seller) : undefined,
@@ -106,9 +120,29 @@ export async function findListing(
 				name: aliasColumn(s.categories.name, "c_name"),
 				parent_id: aliasColumn(s.categories.parent_id, "c_parent_id"),
 			},
+			location: {
+				country: s.countries.name,
+				country_id: s.countries.id,
+				country_code: s.listings.country_code,
+				country_emoji: s.countries.emoji,
+				state: s.states.name,
+				state_id: s.states.id,
+				state_code: s.listings.state_code,
+				city: s.cities.name,
+				city_id: s.cities.id,
+			},
 		})
 		.from(s.listings)
 		.innerJoin(s.categories, eq(s.listings.category_id, s.categories.id))
+		.leftJoin(s.countries, eq(s.listings.country_code, s.countries.iso2))
+		.leftJoin(
+			s.states,
+			and(
+				eq(s.listings.state_code, s.states.iso2),
+				eq(s.listings.country_code, s.states.country_code),
+			),
+		)
+		.leftJoin(s.cities, eq(s.listings.city, s.cities.id))
 		.where(eq(s.listings.id, listingID));
 	return row;
 }

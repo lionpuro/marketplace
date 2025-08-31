@@ -5,7 +5,7 @@ import Input from "#/components/input";
 import { Loading } from "#/components/loading";
 import { Protected } from "#/components/protected";
 import { Select } from "#/components/select";
-import { formatPrice, titleCase } from "#/helpers";
+import { formatPrice, localDate, titleCase } from "#/helpers";
 import { useLocation } from "#/hooks/use-location";
 import { useCategories } from "#/query/categories";
 import {
@@ -82,7 +82,7 @@ function Component() {
 			{!editing ? (
 				<div className="flex flex-col max-w-sm gap-2">
 					<h1 className="text-3xl font-semibold">{listing.title}</h1>
-					<span className="text-xl font-semibold">
+					<span className="text-2xl font-semibold">
 						{formatPrice(listing.price)}
 					</span>
 					{currentUser && currentUser.uid === listing.seller_id && (
@@ -93,8 +93,20 @@ function Component() {
 							Edit
 						</button>
 					)}
-					<p className="pt-2 border-t border-neutral-200 text-neutral-800 whitespace-pre">
+					<p className="pt-2 border-t border-neutral-200 text-neutral-900 whitespace-pre">
 						{listing.description}
+					</p>
+					<p className="mt-2 text-neutral-900">
+						{[
+							listing.location.city,
+							listing.location.state,
+							listing.location.country,
+						]
+							.filter((s) => s !== null)
+							.join(", ")}
+					</p>
+					<p className="pt-2 border-t border-neutral-200 text-neutral-600 text-sm">
+						Listed {localDate(listing.created_at)}
 					</p>
 				</div>
 			) : (
@@ -150,9 +162,9 @@ function EditForm({
 			title: listing.title,
 			description: listing.description ?? undefined,
 			price: listing.price / 100,
-			country: listing.country_code,
-			state: listing.state_code ?? undefined,
-			city: listing.city ?? undefined,
+			country: listing.location.country_code ?? undefined,
+			state: listing.location.state_code ?? undefined,
+			city: listing.location.city_id ?? undefined,
 		},
 	});
 	const [country, state, city] = watch(["country", "state", "city"]);
