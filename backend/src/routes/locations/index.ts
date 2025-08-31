@@ -1,43 +1,16 @@
 import type { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { Type } from "@sinclair/typebox";
 import { locationRepository } from "../../repository/location.js";
-import { ISO2Schema } from "../../schemas/location.js";
+import {
+	CitySchema,
+	CountrySchema,
+	ISO2Schema,
+	StateSchema,
+} from "../../schemas/location.js";
 
 const ErrorResponseSchema = Type.Object({
 	message: Type.String(),
 });
-
-const CountrysResponseSchema = Type.Array(
-	Type.Object({
-		id: Type.Number(),
-		name: Type.String(),
-		iso2: Type.String(),
-		emoji: Type.String(),
-	}),
-);
-
-const StatesResponseSchema = Type.Array(
-	Type.Object({
-		id: Type.Number(),
-		name: Type.String(),
-		country_id: Type.Number(),
-		country_code: Type.String(),
-		iso2: Type.String(),
-		iso3166_2: Type.String(),
-		type: Type.String(),
-	}),
-);
-
-const CitiesResponseSchema = Type.Array(
-	Type.Object({
-		id: Type.Number(),
-		name: Type.String(),
-		country_id: Type.Number(),
-		country_code: Type.String(),
-		state_id: Type.Number(),
-		state_code: Type.String(),
-	}),
-);
 
 const routes: FastifyPluginAsyncTypebox = async (server) => {
 	server.route({
@@ -45,7 +18,7 @@ const routes: FastifyPluginAsyncTypebox = async (server) => {
 		url: "/countries",
 		schema: {
 			response: {
-				200: CountrysResponseSchema,
+				200: Type.Array(CountrySchema),
 				500: ErrorResponseSchema,
 			},
 		},
@@ -67,7 +40,7 @@ const routes: FastifyPluginAsyncTypebox = async (server) => {
 				iso_country: ISO2Schema,
 			}),
 			response: {
-				200: StatesResponseSchema,
+				200: Type.Array(StateSchema),
 				500: ErrorResponseSchema,
 			},
 		},
@@ -94,7 +67,7 @@ const routes: FastifyPluginAsyncTypebox = async (server) => {
 				iso_state: ISO2Schema,
 			}),
 			response: {
-				200: CitiesResponseSchema,
+				200: Type.Array(CitySchema),
 				500: ErrorResponseSchema,
 			},
 		},

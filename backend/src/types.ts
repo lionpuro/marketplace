@@ -1,5 +1,5 @@
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
-import type * as schema from "./database/schema.js";
+import type * as schema from "./database/schema/index.js";
 import type { repository } from "./repository/index.js";
 import type { Static } from "@sinclair/typebox";
 import type {
@@ -10,6 +10,11 @@ import type {
 	UpdateListingBodySchema,
 } from "./schemas/listing.js";
 import type { db } from "./database/index.js";
+import type {
+	CitySchema,
+	CountrySchema,
+	StateSchema,
+} from "./schemas/location.js";
 
 export type Repository = typeof repository;
 
@@ -49,28 +54,6 @@ export type Category = InferSelectModel<typeof schema.categories>;
 
 export type ParentCategory = Category & { subcategories: Category[] };
 
-export type Country = {
-	id: number;
-	name: string;
-	iso2: string;
-	emoji: string;
-};
-
-export type State = {
-	id: number;
-	name: string;
-	country_id: number;
-	country_code: string;
-	iso2: string;
-	iso3166_2: string;
-	type: string;
-};
-
-export type City = {
-	id: number;
-	name: string;
-	state_id: number;
-	state_code: string;
-	country_id: number;
-	country_code: string;
-};
+export type Country = Static<typeof CountrySchema>;
+export type State = Static<typeof StateSchema>;
+export type City = Static<typeof CitySchema>;

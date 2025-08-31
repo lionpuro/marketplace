@@ -10,7 +10,7 @@ const requestOptions: RequestInit = {
 type Location = {
 	country?: string;
 	state?: string;
-	city?: string;
+	city?: number;
 };
 
 export function useLocation(selected: Location) {

@@ -1,6 +1,6 @@
 import { and, asc, desc, eq, SQL } from "drizzle-orm";
 import { db } from "../database/index.js";
-import * as s from "../database/schema.js";
+import * as s from "../database/schema/index.js";
 import type {
 	Listing,
 	ListingsParams,

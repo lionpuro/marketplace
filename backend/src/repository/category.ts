@@ -1,5 +1,5 @@
 import { db } from "../database/index.js";
-import * as s from "../database/schema.js";
+import * as s from "../database/schema/index.js";
 import type { Category } from "../types.js";
 
 export async function getCategories(): Promise<Category[]> {

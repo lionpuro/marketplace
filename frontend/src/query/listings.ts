@@ -38,7 +38,7 @@ export function useListings(options?: ListingsParams) {
 				params.state = options.state;
 			}
 			if (options?.city) {
-				params.city = options.city;
+				params.city = options.city.toString();
 			}
 			const querystring = new URLSearchParams(params).toString();
 			const base = `${import.meta.env.VITE_BACKEND_URL}/listings`;

@@ -29,7 +29,7 @@ type Inputs = {
 	price: number;
 	country: string;
 	state?: string;
-	city?: string;
+	city?: number;
 };
 
 function Component() {
@@ -249,7 +249,7 @@ function EditForm({
 				>
 					<option value="">--</option>
 					{countries?.map((country) => (
-						<option key={country.id} value={country.iso2}>
+						<option key={country.id} value={country.iso2 ?? undefined}>
 							{country.name}
 						</option>
 					))}
@@ -277,7 +277,7 @@ function EditForm({
 						{states && states.length === 0 ? "No states" : "--"}
 					</option>
 					{states?.map((state) => (
-						<option key={state.id} value={state.iso2}>
+						<option key={state.id} value={state.iso2 ?? undefined}>
 							{state.name}
 						</option>
 					))}

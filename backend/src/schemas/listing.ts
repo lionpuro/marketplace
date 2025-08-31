@@ -11,7 +11,7 @@ export const ListingSchema = Type.Object({
 	price: Type.Number(),
 	country_code: ISO2Schema,
 	state_code: Nullable(ISO2Schema),
-	city: Nullable(Type.String()),
+	city: Nullable(Type.Number()),
 	created_at: Type.String(),
 	updated_at: Type.String(),
 	category: CategorySchema,
@@ -29,7 +29,7 @@ export const ListingsParamsSchema = Type.Object({
 	category: Type.Optional(Type.Number()),
 	country: Type.Optional(Type.String()),
 	state: Type.Optional(Type.String()),
-	city: Type.Optional(Type.String()),
+	city: Type.Optional(Type.Number()),
 	sort: Type.Optional(ListingsSortOption),
 });
 
@@ -40,7 +40,7 @@ export const NewListingBodySchema = Type.Object({
 	price: Type.Number(),
 	country_code: ISO2Schema,
 	state_code: Type.Optional(ISO2Schema),
-	city: Type.Optional(Type.String()),
+	city: Type.Optional(Type.Number()),
 });
 
 export const UpdateListingBodySchema = Type.Object({
@@ -50,5 +50,5 @@ export const UpdateListingBodySchema = Type.Object({
 	price: Type.Number(),
 	country_code: ISO2Schema,
 	state_code: Type.Optional(ISO2Schema),
-	city: Type.Optional(Type.String()),
+	city: Type.Optional(Type.Number()),
 });
