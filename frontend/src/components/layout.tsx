@@ -10,8 +10,11 @@ const Layout = ({ children }: { children?: ReactNode }) => {
 			<div className="flex flex-col min-h-full">
 				<header className="flex flex-col border-b border-neutral-200">
 					<nav className="flex items-center p-3 px-6">
-						<Link to="/" className="text-neutral-900 font-semibold text-lg">
-							marketplace
+						<Link
+							to="/"
+							className="text-neutral-900 font-semibold text-lg tracking-wide"
+						>
+							MARKETPLACE
 						</Link>
 						<div className="ml-auto flex items-center gap-3">
 							{!isAuthenticated ? (
