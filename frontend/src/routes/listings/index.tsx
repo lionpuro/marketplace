@@ -73,12 +73,19 @@ function Component() {
 			<div className="flex flex-col sm:flex-row">
 				<div className="max-sm:hidden min-w-38 flex flex-wrap sm:flex-col gap-x-4 sm:gap-x-6 max-sm:px-2 max-sm:min-h-9 mr-8">
 					<h2 className="flex items-center font-semibold h-9">Categories</h2>
+					<Link
+						to="/listings"
+						search={{ sort: sort }}
+						className="py-1.5 text-primary-600 text-sm font-medium hover:underline underline-offset-2"
+					>
+						All categories
+					</Link>
 					{categories?.map((c) => (
 						<Link
 							key={c.id}
 							to="/listings"
 							search={{ category: c.id, sort: sort }}
-							className="py-2 sm:py-1.5 text-primary-600 text-sm font-medium hover:underline underline-offset-2"
+							className="py-1.5 text-primary-600 text-sm font-medium hover:underline underline-offset-2"
 						>
 							{titleCase(c.name)}
 						</Link>
@@ -158,6 +165,13 @@ const CategoriesMenu = ({ categories }: { categories?: Category[] }) => {
 				<IconChevronDown size="18" />
 			</summary>
 			<div className="absolute left-0 bg-white border border-neutral-200 flex flex-col">
+				<Link
+					to="/listings"
+					onClick={close}
+					className="whitespace-nowrap px-4 py-2 text-primary-600 hover:text-primary-700 hover:bg-primary-200/50 text-sm font-medium"
+				>
+					All categories
+				</Link>
 				{categories?.map((c) => (
 					<Link
 						key={c.id}
