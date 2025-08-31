@@ -64,7 +64,7 @@ function Component() {
 	};
 	return (
 		<div className="flex flex-col max-w-screen-lg w-full mx-auto">
-			<CategoriesMenu categories={categories} />
+			<CategoriesMenu categories={categories} sort={sort} />
 			<h1 className="w-full font-bold text-3xl mb-8 min-h-9">
 				{!category
 					? "All listings"
@@ -122,7 +122,13 @@ function Component() {
 	);
 }
 
-const CategoriesMenu = ({ categories }: { categories?: Category[] }) => {
+const CategoriesMenu = ({
+	categories,
+	sort,
+}: {
+	categories?: Category[];
+	sort?: string;
+}) => {
 	const detailsRef = useRef<HTMLDetailsElement>(null);
 	const summaryRef = useRef<HTMLElement>(null);
 	const close = () => detailsRef.current?.open && summaryRef.current?.click();
@@ -167,6 +173,7 @@ const CategoriesMenu = ({ categories }: { categories?: Category[] }) => {
 			<div className="absolute left-0 bg-white border border-neutral-200 flex flex-col">
 				<Link
 					to="/listings"
+					search={{ sort: sort }}
 					onClick={close}
 					className="whitespace-nowrap px-4 py-2 text-primary-600 hover:text-primary-700 hover:bg-primary-200/50 text-sm font-medium"
 				>
@@ -176,7 +183,7 @@ const CategoriesMenu = ({ categories }: { categories?: Category[] }) => {
 					<Link
 						key={c.id}
 						to="/listings"
-						search={{ category: c.id }}
+						search={{ category: c.id, sort: sort }}
 						onClick={close}
 						className="whitespace-nowrap px-4 py-2 text-primary-600 hover:text-primary-700 hover:bg-primary-200/50 text-sm font-medium"
 					>
