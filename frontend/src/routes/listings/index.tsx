@@ -63,53 +63,53 @@ function Component() {
 		});
 	};
 	return (
-		<div className="flex flex-wrap max-w-screen-lg w-full mx-auto">
+		<div className="flex flex-col max-w-screen-lg w-full mx-auto">
 			<CategoriesMenu categories={categories} />
 			<h1 className="w-full font-bold text-3xl mb-8 min-h-9">
 				{!category
 					? "All listings"
 					: titleCase(categories?.find((c) => c.id === category)?.name ?? "")}
 			</h1>
-			<div className="max-sm:hidden min-w-38 flex flex-wrap sm:flex-col max-sm:justify-center gap-x-4 sm:gap-x-6 max-sm:px-2 max-sm:min-h-9 mr-8">
-				<h2 className="flex items-center font-semibold h-9 max-sm:hidden">
-					Categories
-				</h2>
-				{categories?.map((c) => (
-					<Link
-						key={c.id}
-						to="/listings"
-						search={{ category: c.id, sort: sort }}
-						className="py-2 sm:py-1.5 text-primary-600 text-sm font-medium hover:underline underline-offset-2"
-					>
-						{titleCase(c.name)}
-					</Link>
-				))}
-			</div>
-			<div className="flex flex-col gap-4 grow">
-				<div className="flex items-center">
-					<span className="font-medium text-neutral-600">
-						{listings ? `${listings.length} Results` : ""}
-					</span>
-					<label htmlFor="sort" className="mr-2 ml-auto">
-						Sort:
-					</label>
-					<Select
-						id="sort"
-						name="sort"
-						value={sort}
-						onChange={(e) => {
-							setSorting(e.target.value);
-							e.target.blur();
-						}}
-					>
-						{sortOptions.map((opt) => (
-							<option key={opt.value} value={opt.value}>
-								{opt.label}
-							</option>
-						))}
-					</Select>
+			<div className="flex flex-col sm:flex-row">
+				<div className="max-sm:hidden min-w-38 flex flex-wrap sm:flex-col gap-x-4 sm:gap-x-6 max-sm:px-2 max-sm:min-h-9 mr-8">
+					<h2 className="flex items-center font-semibold h-9">Categories</h2>
+					{categories?.map((c) => (
+						<Link
+							key={c.id}
+							to="/listings"
+							search={{ category: c.id, sort: sort }}
+							className="py-2 sm:py-1.5 text-primary-600 text-sm font-medium hover:underline underline-offset-2"
+						>
+							{titleCase(c.name)}
+						</Link>
+					))}
 				</div>
-				{isLoading ? <Loading /> : <Listings listings={listings} />}
+				<div className="flex flex-col gap-4 grow">
+					<div className="flex items-center">
+						<span className="font-medium text-neutral-600">
+							{listings ? `${listings.length} Results` : ""}
+						</span>
+						<label htmlFor="sort" className="mr-2 ml-auto">
+							Sort:
+						</label>
+						<Select
+							id="sort"
+							name="sort"
+							value={sort}
+							onChange={(e) => {
+								setSorting(e.target.value);
+								e.target.blur();
+							}}
+						>
+							{sortOptions.map((opt) => (
+								<option key={opt.value} value={opt.value}>
+									{opt.label}
+								</option>
+							))}
+						</Select>
+					</div>
+					{isLoading ? <Loading /> : <Listings listings={listings} />}
+				</div>
 			</div>
 		</div>
 	);

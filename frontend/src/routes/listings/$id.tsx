@@ -1,6 +1,6 @@
 import { useAuth } from "#/auth/use-auth";
 import FormError from "#/components/form-error";
-import { IconTrash } from "#/components/icons";
+import { IconImage, IconTrash } from "#/components/icons";
 import Input from "#/components/input";
 import { Loading } from "#/components/loading";
 import { Protected } from "#/components/protected";
@@ -65,7 +65,7 @@ function Component() {
 		return "Listing not found";
 	}
 	return (
-		<div className="flex flex-col grow gap-4 w-full max-w-screen-sm mx-auto">
+		<div className="flex flex-col grow gap-4 w-full max-w-screen-md mx-auto">
 			<div className="flex">
 				<Link to="/listings" className="text-neutral-800 hover:underline">
 					Listings
@@ -80,34 +80,39 @@ function Component() {
 				</Link>
 			</div>
 			{!editing ? (
-				<div className="flex flex-col max-w-sm gap-2">
-					<h1 className="text-3xl font-semibold">{listing.title}</h1>
-					<span className="text-2xl font-semibold">
-						{formatPrice(listing.price)}
-					</span>
-					{currentUser && currentUser.uid === listing.seller_id && (
-						<button
-							onClick={() => setEditing(true)}
-							className="bg-primary-500 text-neutral-50 py-1 px-4 min-w-36 mb-2 mt-2"
-						>
-							Edit
-						</button>
-					)}
-					<p className="pt-2 border-t border-neutral-200 text-neutral-900 whitespace-pre">
-						{listing.description}
-					</p>
-					<p className="mt-2 text-neutral-900">
-						{[
-							listing.location.city,
-							listing.location.state,
-							listing.location.country,
-						]
-							.filter((s) => s !== null)
-							.join(", ")}
-					</p>
-					<p className="pt-2 border-t border-neutral-200 text-neutral-600 text-sm">
-						Listed {localDate(listing.created_at)}
-					</p>
+				<div className="flex gap-8 max-md:flex-col">
+					<div className="bg-neutral-200 text-neutral-400 flex justify-center items-center md:basis-1/2 h-[300px]">
+						<IconImage size="48" />
+					</div>
+					<div className="md:basis-1/2 flex flex-col gap-2">
+						<h1 className="text-3xl font-semibold">{listing.title}</h1>
+						<span className="text-2xl font-semibold">
+							{formatPrice(listing.price)}
+						</span>
+						{currentUser && currentUser.uid === listing.seller_id && (
+							<button
+								onClick={() => setEditing(true)}
+								className="bg-primary-500 text-neutral-50 py-1.5 px-4 min-w-36 mb-2 mt-2"
+							>
+								Edit
+							</button>
+						)}
+						<p className="pt-2 border-t border-neutral-200 text-neutral-900 whitespace-pre">
+							{listing.description}
+						</p>
+						<p className="mt-2 text-neutral-900">
+							{[
+								listing.location.city,
+								listing.location.state,
+								listing.location.country,
+							]
+								.filter((s) => s !== null)
+								.join(", ")}
+						</p>
+						<p className="pt-2 border-t border-neutral-200 text-neutral-600 text-sm">
+							Listed {localDate(listing.created_at)}
+						</p>
+					</div>
 				</div>
 			) : (
 				<Protected>
