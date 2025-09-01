@@ -75,7 +75,7 @@ function Component() {
 					<Link
 						to="/listings"
 						search={{ sort: sort }}
-						className="py-1.5 text-primary-600 text-sm font-medium hover:underline underline-offset-2"
+						className={`relative py-1.5 text-primary-600 text-sm font-medium hover:underline underline-offset-2 ${!category ? "before:content-['✔'] before:absolute before:-left-5 before:text-primary-800" : ""}`}
 					>
 						All categories
 					</Link>
@@ -84,7 +84,7 @@ function Component() {
 							key={c.id}
 							to="/listings"
 							search={{ category: c.id, sort: sort }}
-							className="py-1.5 text-primary-600 text-sm font-medium hover:underline underline-offset-2"
+							className={`relative py-1.5 text-primary-600 text-sm font-medium hover:underline underline-offset-2 ${category === c.id ? "before:content-['✔'] before:absolute before:-left-5 before:text-primary-800" : ""}`}
 						>
 							{titleCase(c.name)}
 						</Link>
