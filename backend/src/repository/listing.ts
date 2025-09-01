@@ -23,15 +23,8 @@ export async function findListings(params: ListingsParams): Promise<Listing[]> {
 			orderBy.push(orderFn(column));
 		}
 	}
-	const {
-		id,
-		seller_id,
-		title,
-		description,
-		price,
-		created_at,
-		updated_at,
-	} = s.listings;
+	const { id, seller_id, title, description, price, created_at, updated_at } =
+		s.listings;
 	const rows = await db
 		.select({
 			id,
@@ -48,11 +41,9 @@ export async function findListings(params: ListingsParams): Promise<Listing[]> {
 			},
 			location: {
 				country: s.countries.name,
-				country_id: s.countries.id,
 				country_code: s.listings.country_code,
 				country_emoji: s.countries.emoji,
 				state: s.states.name,
-				state_id: s.states.id,
 				state_code: s.listings.state_code,
 				city: s.cities.name,
 				city_id: s.cities.id,
@@ -122,11 +113,9 @@ export async function findListing(
 			},
 			location: {
 				country: s.countries.name,
-				country_id: s.countries.id,
 				country_code: s.listings.country_code,
 				country_emoji: s.countries.emoji,
 				state: s.states.name,
-				state_id: s.states.id,
 				state_code: s.listings.state_code,
 				city: s.cities.name,
 				city_id: s.cities.id,

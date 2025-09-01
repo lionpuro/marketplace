@@ -14,11 +14,9 @@ export const ListingSchema = Type.Object({
 	category: CategorySchema,
 	location: Type.Object({
 		country: Nullable(Type.String()),
-		country_id: Nullable(Type.Number()),
 		country_code: Nullable(Type.String()),
 		country_emoji: Nullable(Type.String()),
 		state: Nullable(Type.String()),
-		state_id: Nullable(Type.Number()),
 		state_code: Nullable(Type.String()),
 		city: Nullable(Type.String()),
 		city_id: Nullable(Type.Number()),
