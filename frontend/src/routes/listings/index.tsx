@@ -11,7 +11,7 @@ import type { Category, ListingsSortOption } from "backend";
 
 type ListingsSearch = {
 	category?: number;
-	sort?: string;
+	sort?: ListingsSortOption;
 };
 
 function sortOption(s: string): ListingsSortOption {
@@ -127,7 +127,7 @@ const CategoriesMenu = ({
 	sort,
 }: {
 	categories?: Category[];
-	sort?: string;
+	sort?: ListingsSortOption;
 }) => {
 	const detailsRef = useRef<HTMLDetailsElement>(null);
 	const summaryRef = useRef<HTMLElement>(null);
