@@ -14,25 +14,24 @@ type ListingsSearch = {
 	sort?: ListingsSortOption;
 };
 
-function sortOption(s: string): ListingsSortOption {
-	switch (s) {
-		case "date|desc":
-			return s;
-		case "date|asc":
-			return s;
-		case "price|asc":
-			return s;
-		case "price|desc":
-			return s;
-		default:
-			return "date|desc";
+function isSortOption(input: unknown): input is ListingsSortOption {
+	if (typeof input !== "string") {
+		return false;
 	}
+	switch (input) {
+		case "date|desc":
+		case "date|asc":
+		case "price|asc":
+		case "price|desc":
+			return true;
+	}
+	return false;
 }
 
 export const Route = createFileRoute("/listings/")({
 	validateSearch: (search: Record<string, unknown>): ListingsSearch => {
 		const params: ListingsSearch = {
-			sort: sortOption(typeof search.sort === "string" ? search.sort : ""),
+			sort: isSortOption(search.sort) ? search.sort : "date|desc",
 		};
 		if (search.category) {
 			params.category = Number(search.category);
@@ -55,11 +54,11 @@ function Component() {
 	const { data: categories } = useCategories();
 	const { data: listings, isLoading } = useListings({
 		category: category,
-		sort: sortOption(sort ?? ""),
+		sort: sort,
 	});
-	const setSorting = (input: string) => {
+	const setSorting = (input: ListingsSortOption) => {
 		navigate({
-			search: (prev) => ({ ...prev, sort: sortOption(input) }),
+			search: (prev) => ({ ...prev, sort: input }),
 		});
 	};
 	return (
@@ -104,7 +103,8 @@ function Component() {
 							name="sort"
 							value={sort}
 							onChange={(e) => {
-								setSorting(e.target.value);
+								const v = e.target.value;
+								setSorting(isSortOption(v) ? v : "date|desc");
 								e.target.blur();
 							}}
 						>
