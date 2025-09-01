@@ -15,6 +15,7 @@ export function useListings(options?: ListingsParams) {
 	const query = useQuery({
 		queryFn: async () => {
 			const params: {
+				q?: string;
 				sort?: ListingsSortOption;
 				seller?: string;
 				category?: string;
@@ -22,6 +23,9 @@ export function useListings(options?: ListingsParams) {
 				state?: string;
 				city?: string;
 			} = {};
+			if (options?.q) {
+				params.q = options.q;
+			}
 			if (options?.sort) {
 				params.sort = options.sort;
 			}

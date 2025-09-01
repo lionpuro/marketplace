@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, SQL } from "drizzle-orm";
+import { and, asc, desc, eq, ilike, SQL } from "drizzle-orm";
 import { db } from "../database/index.js";
 import * as s from "../database/schema/index.js";
 import type {
@@ -73,6 +73,7 @@ export async function findListings(params: ListingsParams): Promise<Listing[]> {
 					? eq(s.listings.state_code, params.state)
 					: undefined,
 				params.city ? eq(s.listings.city, params.city) : undefined,
+				params.q ? ilike(s.listings.title, `%${params.q}%`) : undefined,
 			),
 		)
 		.orderBy(...orderBy);

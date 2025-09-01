@@ -6,4 +6,6 @@ export {
 	GoPlus as IconPlus,
 	GoChevronDown as IconChevronDown,
 	GoImage as IconImage,
+	GoSearch as IconSearch,
+	GoX as IconX,
 } from "react-icons/go";

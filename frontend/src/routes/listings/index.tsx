@@ -8,10 +8,12 @@ import { Select } from "#/components/select";
 import { Listings } from "#/components/listings";
 import { IconChevronDown } from "#/components/icons";
 import type { Category, ListingsSortOption } from "backend";
+import { SearchBar } from "#/components/searchbar";
 
 type ListingsSearch = {
 	category?: number;
 	sort?: ListingsSortOption;
+	q?: string;
 };
 
 function isSortOption(input: unknown): input is ListingsSortOption {
@@ -30,11 +32,13 @@ function isSortOption(input: unknown): input is ListingsSortOption {
 
 export const Route = createFileRoute("/listings/")({
 	validateSearch: (search: Record<string, unknown>): ListingsSearch => {
-		const params: ListingsSearch = {
-			sort: isSortOption(search.sort) ? search.sort : "date|desc",
-		};
+		const params: ListingsSearch = {};
 		if (search.category) {
 			params.category = Number(search.category);
+		}
+		params.sort = isSortOption(search.sort) ? search.sort : "date|desc";
+		if (search.q && typeof search.q === "string") {
+			params.q = search.q;
 		}
 		return params;
 	},
@@ -49,32 +53,47 @@ const sortOptions: { value: ListingsSortOption; label: string }[] = [
 ];
 
 function Component() {
-	const { category, sort } = Route.useSearch();
+	const { category, sort, q } = Route.useSearch();
 	const navigate = useNavigate({ from: Route.fullPath });
 	const { data: categories } = useCategories();
 	const { data: listings, isLoading } = useListings({
 		category: category,
 		sort: sort,
+		q: q,
 	});
 	const setSorting = (input: ListingsSortOption) => {
 		navigate({
 			search: (prev) => ({ ...prev, sort: input }),
 		});
 	};
+	const onSearch = (query?: string) => {
+		navigate({
+			to: "/listings",
+			search: (prev) => ({ ...prev, q: query ? query : undefined }),
+		});
+	};
 	return (
 		<div className="flex flex-col max-w-screen-lg w-full mx-auto">
-			<CategoriesMenu categories={categories} sort={sort} />
-			<h1 className="w-full font-bold text-3xl mb-8 min-h-9">
-				{!category
-					? "All listings"
-					: titleCase(categories?.find((c) => c.id === category)?.name ?? "")}
-			</h1>
+			<CategoriesMenu categories={categories} />
+			<div className="flex flex-col sm:flex-row sm:items-center mb-8">
+				<h1 className="w-full font-bold text-3xl min-h-9 max-sm:mb-4">
+					{!category
+						? "All listings"
+						: titleCase(categories?.find((c) => c.id === category)?.name ?? "")}
+				</h1>
+				<SearchBar
+					onSubmit={onSearch}
+					onClear={() => onSearch(undefined)}
+					defaultValue={q}
+					className="sm:max-w-screen-sm mx-auto w-full"
+				/>
+			</div>
 			<div className="flex flex-col sm:flex-row">
 				<div className="max-sm:hidden min-w-38 flex flex-wrap sm:flex-col gap-x-4 sm:gap-x-6 max-sm:px-2 max-sm:min-h-9 mr-8">
 					<h2 className="flex items-center font-semibold h-9">Categories</h2>
 					<Link
 						to="/listings"
-						search={{ sort: sort }}
+						search={(prev) => ({ ...prev, category: undefined })}
 						className={`relative py-1.5 text-primary-600 text-sm font-medium hover:underline underline-offset-2 ${!category ? "before:content-['✔'] before:absolute before:-left-5 before:text-primary-800" : ""}`}
 					>
 						All categories
@@ -83,7 +102,7 @@ function Component() {
 						<Link
 							key={c.id}
 							to="/listings"
-							search={{ category: c.id, sort: sort }}
+							search={(prev) => ({ ...prev, category: c.id })}
 							className={`relative py-1.5 text-primary-600 text-sm font-medium hover:underline underline-offset-2 ${category === c.id ? "before:content-['✔'] before:absolute before:-left-5 before:text-primary-800" : ""}`}
 						>
 							{titleCase(c.name)}
@@ -122,13 +141,7 @@ function Component() {
 	);
 }
 
-const CategoriesMenu = ({
-	categories,
-	sort,
-}: {
-	categories?: Category[];
-	sort?: ListingsSortOption;
-}) => {
+const CategoriesMenu = ({ categories }: { categories?: Category[] }) => {
 	const detailsRef = useRef<HTMLDetailsElement>(null);
 	const summaryRef = useRef<HTMLElement>(null);
 	const close = () => detailsRef.current?.open && summaryRef.current?.click();
@@ -173,7 +186,7 @@ const CategoriesMenu = ({
 			<div className="absolute left-0 bg-white border border-base-100 flex flex-col">
 				<Link
 					to="/listings"
-					search={{ sort: sort }}
+					search={(prev) => ({ ...prev, category: undefined })}
 					onClick={close}
 					className="whitespace-nowrap px-4 py-2 text-primary-600 hover:text-primary-700 hover:bg-primary-200/50 text-sm font-medium"
 				>
@@ -183,7 +196,7 @@ const CategoriesMenu = ({
 					<Link
 						key={c.id}
 						to="/listings"
-						search={{ category: c.id, sort: sort }}
+						search={(prev) => ({ ...prev, category: c.id })}
 						onClick={close}
 						className="whitespace-nowrap px-4 py-2 text-primary-600 hover:text-primary-700 hover:bg-primary-200/50 text-sm font-medium"
 					>

@@ -31,6 +31,7 @@ export const ListingsSortOption = Type.Union([
 ]);
 
 export const ListingsParamsSchema = Type.Object({
+	q: Type.Optional(Type.String()),
 	seller: Type.Optional(Type.String()),
 	category: Type.Optional(Type.Number()),
 	country: Type.Optional(Type.String()),
