@@ -16,17 +16,17 @@ export const Listings = ({ listings }: { listings?: Listing[] }) => (
 						<IconImage size="32" />
 					</div>
 					<div className="flex flex-col w-full">
-						<h3 className="font-semibold hover:underline text-neutral-900">
+						<h3 className="font-semibold hover:underline text-base-900">
 							{listing.title}
 						</h3>
-						<span className="font-semibold text-2xl w-full text-neutral-900">
+						<span className="font-semibold text-2xl w-full text-base-900">
 							{formatPrice(listing.price)}
 						</span>
 						<div className="flex items-center mt-auto">
-							<span className="text-neutral-900 self-end">
+							<span className="text-base-900 self-end">
 								{`${listing.location.country_emoji ?? ""} ${listing.location.country ?? ""}`}
 							</span>
-							<time className="ml-auto text-neutral-500 text-sm flex items-center self-end">
+							<time className="ml-auto text-base-500 text-sm flex items-center self-end">
 								{localDate(listing.created_at)}
 							</time>
 						</div>

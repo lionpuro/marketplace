@@ -64,19 +64,19 @@ function Verification() {
 					<div className="flex flex-col gap-4">
 						<p>To complete your sign up, please verify your email</p>
 						{(timerStarted || attempts > 0) && (
-							<p className="text-neutral-800">
+							<p className="text-base-800">
 								{"Verification link sent to "}
 								<span className="font-medium">{currentUser.email}</span>
 							</p>
 						)}
-						<p className="text-neutral-600">
+						<p className="text-base-600">
 							{timerStarted && timeLeft > 0
 								? `You can retry in ${timeLeft / 1000} ${timeLeft / 1000 === 1 ? "second" : "seconds"}`
 								: null}
 						</p>
 						<button
 							onClick={sendVerification}
-							className="bg-primary-400 hover:bg-primary-500 text-neutral-50 disabled:bg-neutral-300 disabled:text-neutral-500 disabled:cursor-not-allowed px-4 py-2 w-fit"
+							className="bg-primary-400 hover:bg-primary-500 text-base-50 disabled:bg-base-300 disabled:text-base-500 disabled:cursor-not-allowed px-4 py-2 w-fit"
 							disabled={timeLeft > 0}
 						>
 							{attempts > 0 ? "Resend" : "Verify"}

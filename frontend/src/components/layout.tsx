@@ -8,11 +8,11 @@ const Layout = ({ children }: { children?: ReactNode }) => {
 	return (
 		<>
 			<div className="flex flex-col min-h-full">
-				<header className="flex flex-col border-b border-neutral-200">
+				<header className="flex flex-col border-b border-base-100">
 					<nav className="flex items-center p-3 px-6">
 						<Link
 							to="/"
-							className="text-neutral-900 font-semibold text-lg tracking-wide"
+							className="text-base-900 font-semibold text-lg tracking-wide"
 						>
 							MARKETPLACE
 						</Link>
@@ -21,7 +21,7 @@ const Layout = ({ children }: { children?: ReactNode }) => {
 								<>
 									<Link
 										to="/signin"
-										className="ml-auto border-2 border-primary-400 bg-primary-400 text-neutral-50 py-1 px-4"
+										className="ml-auto border-2 border-primary-400 bg-primary-400 text-base-50 py-1 px-4"
 									>
 										Sign in
 									</Link>

@@ -67,21 +67,21 @@ function Component() {
 	return (
 		<div className="flex flex-col grow gap-4 w-full max-w-screen-md mx-auto">
 			<div className="flex">
-				<Link to="/listings" className="text-neutral-800 hover:underline">
+				<Link to="/listings" className="text-base-800 hover:underline">
 					Listings
 				</Link>
-				<span className="text-neutral-400 mx-2">/</span>
+				<span className="text-base-400 mx-2">/</span>
 				<Link
 					to="/listings"
 					search={{ category: listing.category.id }}
-					className="text-neutral-800 hover:underline"
+					className="text-base-800 hover:underline"
 				>
 					{titleCase(listing.category.name)}
 				</Link>
 			</div>
 			{!editing ? (
 				<div className="flex gap-8 max-md:flex-col">
-					<div className="bg-neutral-200 text-neutral-400 flex justify-center items-center md:basis-1/2 h-[300px]">
+					<div className="bg-base-100 text-base-400 flex justify-center items-center md:basis-1/2 h-[300px]">
 						<IconImage size="48" />
 					</div>
 					<div className="md:basis-1/2 flex flex-col gap-2">
@@ -92,15 +92,15 @@ function Component() {
 						{currentUser && currentUser.uid === listing.seller_id && (
 							<button
 								onClick={() => setEditing(true)}
-								className="bg-primary-500 text-neutral-50 py-1.5 px-4 min-w-36 mb-2 mt-2"
+								className="bg-primary-500 text-base-50 py-1.5 px-4 min-w-36 mb-2 mt-2"
 							>
 								Edit
 							</button>
 						)}
-						<p className="pt-2 border-t border-neutral-200 text-neutral-900 whitespace-pre">
+						<p className="pt-2 border-t border-base-100 text-base-900 whitespace-pre">
 							{listing.description}
 						</p>
-						<p className="mt-2 text-neutral-900">
+						<p className="mt-2 text-base-900">
 							{[
 								listing.location.city,
 								listing.location.state,
@@ -109,7 +109,7 @@ function Component() {
 								.filter((s) => s !== null)
 								.join(", ")}
 						</p>
-						<p className="pt-2 border-t border-neutral-200 text-neutral-600 text-sm">
+						<p className="pt-2 border-t border-base-100 text-base-600 text-sm">
 							Listed {localDate(listing.created_at)}
 						</p>
 					</div>
@@ -183,7 +183,7 @@ function EditForm({
 				<h1 className="text-xl font-semibold">Edit listing</h1>
 				<button
 					type="submit"
-					className="ml-auto bg-primary-500 text-neutral-50 disabled:bg-neutral-200 disabled:text-neutral-400 py-1 px-4"
+					className="ml-auto bg-primary-500 text-base-50 disabled:bg-base-100 disabled:text-base-400 py-1 px-4"
 					disabled={!isValid || isSubmitting}
 				>
 					Save
@@ -193,7 +193,7 @@ function EditForm({
 						e.preventDefault();
 						onCancel();
 					}}
-					className="bg-neutral-400 text-neutral-50 py-1 px-4"
+					className="bg-base-400 text-base-50 py-1 px-4"
 				>
 					Cancel
 				</button>
@@ -232,10 +232,10 @@ function EditForm({
 			<textarea
 				{...register("description")}
 				rows={3}
-				className="p-3 field-sizing-content bg-white border border-neutral-200"
+				className="p-3 field-sizing-content bg-white border border-base-100"
 			/>
 			<label htmlFor="price">Price</label>
-			<span className="w-fit relative after:absolute after:right-2 after:top-1/2 after:translate-y-[-50%] after:content-['€'] after:text-neutral-800 after:font-medium">
+			<span className="w-fit relative after:absolute after:right-2 after:top-1/2 after:translate-y-[-50%] after:content-['€'] after:text-base-800 after:font-medium">
 				<Input
 					{...register("price", {
 						valueAsNumber: true,

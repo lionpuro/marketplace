@@ -59,13 +59,12 @@ function SignIn() {
 					name="password"
 					type="password"
 					placeholder="Password"
-					className="border border-neutral-200 px-3 py-1.5"
 					required
 				/>
-				<button className="mt-4 bg-primary-400 hover:bg-primary-500 text-neutral-50 p-2 font-medium">
+				<button className="mt-4 bg-primary-400 hover:bg-primary-500 text-base-50 p-2 font-medium">
 					Sign in
 				</button>
-				<p className="text-neutral-500 mt-2">
+				<p className="text-base-500 mt-2">
 					{"Don't have an account? "}
 					<Link to="/signup" className="text-blue-500">
 						Sign up now

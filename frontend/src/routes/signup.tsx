@@ -110,10 +110,10 @@ function SignUp() {
 				<span className="text-red-600/80 text-sm">
 					{formErrors.password && formErrors.password}
 				</span>
-				<button className="mt-4 bg-primary-400 hover:bg-primary-500 text-neutral-50 p-2 font-medium">
+				<button className="mt-4 bg-primary-400 hover:bg-primary-500 text-base-50 p-2 font-medium">
 					Sign up
 				</button>
-				<p className="text-neutral-500 mt-2">
+				<p className="text-base-500 mt-2">
 					{"Already have an account? "}
 					<Link to="/signin" className="text-blue-500">
 						Sign in now

@@ -99,10 +99,10 @@ function Component() {
 					<textarea
 						{...register("description")}
 						rows={3}
-						className="p-3 field-sizing-content bg-white border border-neutral-200"
+						className="p-3 field-sizing-content bg-white border border-base-100"
 					/>
 					<label htmlFor="price">Price</label>
-					<span className="w-fit relative after:absolute after:right-2 after:top-1/2 after:translate-y-[-50%] after:content-['€'] after:text-neutral-800 after:font-medium">
+					<span className="w-fit relative after:absolute after:right-2 after:top-1/2 after:translate-y-[-50%] after:content-['€'] after:text-base-800 after:font-medium">
 						<Input
 							{...register("price", {
 								valueAsNumber: true,
@@ -181,7 +181,7 @@ function Component() {
 					<FormError message={errors.city?.message} />
 					<button
 						type="submit"
-						className="mt-4 bg-primary-400 text-neutral-50 disabled:bg-neutral-200 disabled:text-neutral-400 py-1.5"
+						className="mt-4 bg-primary-400 text-base-50 disabled:bg-base-100 disabled:text-base-400 py-1.5"
 						disabled={!isValid || isPending}
 					>
 						Submit

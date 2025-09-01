@@ -103,7 +103,7 @@ function Component() {
 										<button
 											type="button"
 											onClick={toggleEditing}
-											className="flex items-center gap-2 bg-primary-400 text-neutral-50 pl-2 pr-3 py-0.5"
+											className="flex items-center gap-2 bg-primary-400 text-base-50 pl-2 pr-3 py-0.5"
 										>
 											<IconPencil />
 											Edit
@@ -112,7 +112,7 @@ function Component() {
 										<>
 											<button
 												type="submit"
-												className="bg-primary-400 disabled:bg-neutral-300 text-neutral-50 disabled:text-neutral-500 px-3 py-0.5"
+												className="bg-primary-400 disabled:bg-base-300 text-base-50 disabled:text-base-500 px-3 py-0.5"
 												disabled={
 													displayName === currentUser.displayName ||
 													displayName === ""
@@ -123,7 +123,7 @@ function Component() {
 											<button
 												type="button"
 												onClick={toggleEditing}
-												className="bg-neutral-400 text-neutral-50 px-3 py-0.5"
+												className="bg-base-400 text-base-50 px-3 py-0.5"
 											>
 												Cancel
 											</button>
@@ -144,7 +144,7 @@ function Component() {
 										defaultValue={currentUser.displayName ?? undefined}
 										onChange={(e) => setDisplayName(e.target.value)}
 										disabled={!isEditing}
-										className="py-0.5 px-1.5 border border-neutral-300 disabled:border-transparent grow"
+										className="py-0.5 px-1.5 border border-base-300 disabled:border-transparent grow"
 										required
 									/>
 								</div>
@@ -158,12 +158,12 @@ function Component() {
 										type="text"
 										defaultValue={currentUser.email ?? undefined}
 										disabled={true}
-										className="py-0.5 px-1.5 border border-neutral-300 disabled:border-transparent grow"
+										className="py-0.5 px-1.5 border border-base-300 disabled:border-transparent grow"
 									/>
 								</div>
 							</form>
 							{!currentUser.emailVerified && (
-								<p className="text-sm text-neutral-600">
+								<p className="text-sm text-base-600">
 									{"Your email is unverified. "}
 									<Link to="/account/verification" className="text-blue-500">
 										Click here to verify your email
@@ -172,26 +172,26 @@ function Component() {
 							)}
 							<button
 								onClick={() => setModalOpen(true)}
-								className="py-1.5 px-4 bg-red-600/80 text-neutral-50 w-fit mt-4 flex items-center gap-2"
+								className="py-1.5 px-4 bg-red-600/80 text-base-50 w-fit mt-4 flex items-center gap-2"
 							>
 								<IconTrash />
 								Delete account
 							</button>
 							<Modal isOpen={modalOpen} onClose={closeModal}>
-								<div className="flex flex-col bg-neutral-100 p-8">
-									<span className="text-lg font-medium text-neutral-800 w-full mb-8">
+								<div className="flex flex-col bg-base-100 p-8">
+									<span className="text-lg font-medium text-base-800 w-full mb-8">
 										Are you sure you want to delete your account?
 									</span>
 									<div className="flex justify-end gap-4">
 										<button
 											onClick={closeModal}
-											className="py-1.5 px-4 font-medium bg-neutral-400 hover:bg-neutral-500 text-neutral-50"
+											className="py-1.5 px-4 font-medium bg-base-400 hover:bg-base-500 text-base-50"
 										>
 											Cancel
 										</button>
 										<button
 											onClick={onDelete}
-											className="py-1.5 px-4 font-medium bg-red-600/80 hover:bg-red-700/80 text-neutral-50"
+											className="py-1.5 px-4 font-medium bg-red-600/80 hover:bg-red-700/80 text-base-50"
 										>
 											Delete
 										</button>

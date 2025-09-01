@@ -5,8 +5,8 @@ type Props = SelectHTMLAttributes<HTMLSelectElement>;
 export const Select = ({ children, className, ...props }: Props) => (
 	<select
 		className={[
-			"bg-white disabled:bg-neutral-200/50 px-3 py-1.5 pr-3",
-			"border-r-5 border-transparent outline outline-neutral-200",
+			"bg-white disabled:bg-base-100/50 px-3 py-1.5 pr-3",
+			"border-r-5 border-transparent outline outline-base-100",
 			"focus-within:outline-2 focus-within:-outline-offset-1 focus-within:outline-focus",
 			className,
 		]

@@ -7,7 +7,7 @@ type Props = InputHTMLAttributes<HTMLInputElement> & {
 const Input = ({ className, ...props }: Props) => {
 	return (
 		<input
-			className={`border border-neutral-200 px-3 py-1.5 ${className ? className : ""}`}
+			className={`border border-base-100 px-3 py-1.5 ${className ? className : ""}`}
 			{...props}
 		/>
 	);

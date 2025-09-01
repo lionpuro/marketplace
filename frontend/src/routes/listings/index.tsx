@@ -93,7 +93,7 @@ function Component() {
 				</div>
 				<div className="flex flex-col gap-4 grow">
 					<div className="flex items-center">
-						<span className="font-medium text-neutral-600">
+						<span className="font-medium text-base-600">
 							{listings ? `${listings.length} Results` : ""}
 						</span>
 						<label htmlFor="sort" className="mr-2 ml-auto">
@@ -170,7 +170,7 @@ const CategoriesMenu = ({
 				Categories
 				<IconChevronDown size="18" />
 			</summary>
-			<div className="absolute left-0 bg-white border border-neutral-200 flex flex-col">
+			<div className="absolute left-0 bg-white border border-base-100 flex flex-col">
 				<Link
 					to="/listings"
 					search={{ sort: sort }}
