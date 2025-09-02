@@ -1,7 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { useAuth } from "#/auth/use-auth";
-import { IconPlus, IconSignOut, IconUser } from "#/components/icons";
+import {
+	IconChevronDown,
+	IconNote,
+	IconPlus,
+	IconSignOut,
+	IconUser,
+} from "#/components/icons";
+import { Dropdown } from "./dropdown";
 
 const Layout = ({ children }: { children?: ReactNode }) => {
 	const { isAuthenticated, signOut } = useAuth();
@@ -41,26 +48,37 @@ const Layout = ({ children }: { children?: ReactNode }) => {
 										<IconPlus className="text-lg" />
 										New listing
 									</Link>
-									<Link
-										to="/my-listings"
-										className="flex items-center gap-1 text-primary-700 p-1.5"
+									<Dropdown
+										label={
+											<>
+												Account
+												<IconChevronDown size="18" />
+											</>
+										}
+										position="top-right"
 									>
-										My listings
-									</Link>
-									<Link
-										to="/account"
-										className="flex items-center gap-1 text-primary-700 p-1.5"
-									>
-										<IconUser className="text-lg" />
-										Account
-									</Link>
-									<button
-										onClick={signOut}
-										className="flex items-center gap-1 text-red-600/90 p-1.5"
-									>
-										<IconSignOut className="text-lg" />
-										Sign out
-									</button>
+										<Link
+											to="/account"
+											className="flex items-center gap-2 p-1.5 px-3 hover:bg-base-50 border-b border-base-100"
+										>
+											<IconUser className="text-lg" />
+											Account
+										</Link>
+										<Link
+											to="/my-listings"
+											className="whitespace-nowrap flex items-center gap-2 p-1.5 px-3 hover:bg-base-50 border-b border-base-100"
+										>
+											<IconNote className="text-lg" />
+											My listings
+										</Link>
+										<button
+											onClick={signOut}
+											className="whitespace-nowrap flex items-center gap-2 text-red-600/90 p-1.5 px-3 hover:bg-base-50"
+										>
+											<IconSignOut className="text-lg" />
+											Sign out
+										</button>
+									</Dropdown>
 								</>
 							)}
 						</div>
