@@ -1,4 +1,3 @@
-import { useEffect, useRef } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Loading } from "#/components/loading";
 import { titleCase } from "#/helpers";
@@ -9,6 +8,7 @@ import { Listings } from "#/components/listings";
 import { IconChevronDown } from "#/components/icons";
 import type { Category, ListingsSortOption } from "backend";
 import { SearchBar } from "#/components/searchbar";
+import { Dropdown } from "#/components/dropdown";
 
 type ListingsSearch = {
 	category?: number;
@@ -142,68 +142,35 @@ function Component() {
 }
 
 const CategoriesMenu = ({ categories }: { categories?: Category[] }) => {
-	const detailsRef = useRef<HTMLDetailsElement>(null);
-	const summaryRef = useRef<HTMLElement>(null);
-	const close = () => detailsRef.current?.open && summaryRef.current?.click();
-
-	useEffect(() => {
-		const onKeyDown = (e: KeyboardEvent) => {
-			if (e.key === "Escape") {
-				close();
-			}
-		};
-		const onClick = (e: MouseEvent) => {
-			if (!detailsRef.current) {
-				return;
-			}
-			const rect = detailsRef.current.getBoundingClientRect();
-			const outside =
-				e.clientX < rect.left ||
-				e.clientX > rect.right ||
-				e.clientY < rect.top ||
-				e.clientY > rect.bottom;
-			if (outside) {
-				close();
-			}
-		};
-		document.addEventListener("keydown", onKeyDown);
-		document.body.addEventListener("click", onClick);
-		return () => {
-			document.removeEventListener("keydown", onKeyDown);
-			document.body.removeEventListener("click", onClick);
-		};
-	}, []);
-
 	return (
-		<details ref={detailsRef} className="relative sm:hidden">
-			<summary
-				ref={summaryRef}
-				className="cursor-pointer list-none select-none flex items-center gap-1 py-1.5"
+		<Dropdown
+			label={
+				<>
+					Categories
+					<IconChevronDown size="18" />
+				</>
+			}
+			className="sm:hidden"
+		>
+			<Link
+				to="/listings"
+				search={(prev) => ({ ...prev, category: undefined })}
+				onClick={close}
+				className="whitespace-nowrap px-4 py-2 text-primary-600 hover:text-primary-700 hover:bg-primary-200/50 text-sm font-medium"
 			>
-				Categories
-				<IconChevronDown size="18" />
-			</summary>
-			<div className="absolute left-0 bg-white border border-base-100 flex flex-col">
+				All categories
+			</Link>
+			{categories?.map((c) => (
 				<Link
+					key={c.id}
 					to="/listings"
-					search={(prev) => ({ ...prev, category: undefined })}
+					search={(prev) => ({ ...prev, category: c.id })}
 					onClick={close}
 					className="whitespace-nowrap px-4 py-2 text-primary-600 hover:text-primary-700 hover:bg-primary-200/50 text-sm font-medium"
 				>
-					All categories
+					{titleCase(c.name)}
 				</Link>
-				{categories?.map((c) => (
-					<Link
-						key={c.id}
-						to="/listings"
-						search={(prev) => ({ ...prev, category: c.id })}
-						onClick={close}
-						className="whitespace-nowrap px-4 py-2 text-primary-600 hover:text-primary-700 hover:bg-primary-200/50 text-sm font-medium"
-					>
-						{titleCase(c.name)}
-					</Link>
-				))}
-			</div>
-		</details>
+			))}
+		</Dropdown>
 	);
 };
