@@ -1,8 +1,9 @@
 import { useAuth } from "#/auth/use-auth";
-import { H1 } from "#/components/headings";
+import { Layout } from "#/components/layout";
 import { Listings } from "#/components/listings";
 import { Protected } from "#/components/protected";
 import { useListings } from "#/query/listings";
+import { Title } from "@mantine/core";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/my-listings/")({
@@ -13,11 +14,13 @@ function Component() {
 	const { currentUser } = useAuth();
 	const { data: listings } = useListings({ seller: currentUser?.uid });
 	return (
-		<div className="flex flex-col grow gap-4 w-full max-w-screen-sm mx-auto">
-			<H1>My listings</H1>
+		<Layout>
+			<Title order={1} mb="lg">
+				My listings
+			</Title>
 			<Protected>
 				<Listings listings={listings} />
 			</Protected>
-		</div>
+		</Layout>
 	);
 }

@@ -2,9 +2,10 @@ import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { sendEmailVerification } from "firebase/auth";
 import { useAuth } from "#/auth/use-auth";
-import { H1 } from "#/components/headings";
 import { Protected } from "#/components/protected";
 import { toast } from "react-toastify";
+import { Layout } from "#/components/layout";
+import { Box, Button, Stack, Text, Title } from "@mantine/core";
 
 export const Route = createFileRoute("/account/verification")({
 	component: Verification,
@@ -57,36 +58,38 @@ function Verification() {
 		return <Navigate to="/signin" />;
 	}
 	return (
-		<div className="flex flex-col grow max-w-screen-sm mx-auto w-full">
-			<H1>Verify your email</H1>
+		<Layout>
+			<Title order={1}>Verify your email</Title>
 			<Protected allowUnverified={true}>
 				{currentUser && !currentUser.emailVerified && (
-					<div className="flex flex-col gap-4">
+					<Stack gap="sm">
 						<p>To complete your sign up, please verify your email</p>
 						{(timerStarted || attempts > 0) && (
-							<p className="text-base-800">
+							<Text>
 								{"Verification link sent to "}
-								<span className="font-medium">{currentUser.email}</span>
-							</p>
+								<Box fw={500} component="span">
+									{currentUser.email}
+								</Box>
+							</Text>
 						)}
-						<p className="text-base-600">
+						<Text c="gray.6">
 							{timerStarted && timeLeft > 0
 								? `You can retry in ${timeLeft / 1000} ${timeLeft / 1000 === 1 ? "second" : "seconds"}`
 								: null}
-						</p>
-						<button
+						</Text>
+						<Button
+							w="fit-content"
 							onClick={sendVerification}
-							className="bg-primary-400 hover:bg-primary-500 text-base-50 disabled:bg-base-300 disabled:text-base-500 disabled:cursor-not-allowed px-4 py-2 w-fit"
 							disabled={timeLeft > 0}
 						>
 							{attempts > 0 ? "Resend" : "Verify"}
-						</button>
-					</div>
+						</Button>
+					</Stack>
 				)}
 				{currentUser && currentUser.emailVerified && (
 					<p>Email successfully verified!</p>
 				)}
 			</Protected>
-		</div>
+		</Layout>
 	);
 }

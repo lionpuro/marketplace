@@ -1,3 +1,5 @@
+import { Text } from "@mantine/core";
+
 const FormError = ({ message }: { message?: string }) =>
-	!message ? null : <p className="text-red-600/80">{message}</p>;
+	!message ? null : <Text c="red">{message}</Text>;
 export default FormError;

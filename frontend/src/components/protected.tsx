@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { useAuth } from "#/auth/use-auth";
 import { Navigate } from "@tanstack/react-router";
-import { Spinner } from "#/components/spinner";
+import { Loading } from "./loading";
 
 export const Protected = ({
 	allowUnverified = false,
@@ -15,14 +15,7 @@ export const Protected = ({
 		return <Navigate to="/signin" />;
 	}
 	if (!currentUser) {
-		return (
-			<div className="flex justify-center items-center grow">
-				<Spinner
-					size={36}
-					className="fixed left-1/2 top-1/2 -translate-x-[50%] -translate-y-[50%] text-neutral-400"
-				/>
-			</div>
-		);
+		return <Loading />;
 	}
 	if (!allowUnverified && !currentUser.emailVerified) {
 		return <Navigate to="/account/verification" />;

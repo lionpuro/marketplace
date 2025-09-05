@@ -9,4 +9,6 @@ export {
 	GoSearch as IconSearch,
 	GoX as IconX,
 	GoNote as IconNote,
+	GoFilter as IconFilter,
 } from "react-icons/go";
+export { TbMenu2 as IconMenu } from "react-icons/tb";

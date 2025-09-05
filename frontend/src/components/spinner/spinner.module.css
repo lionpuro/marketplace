@@ -1,0 +1,20 @@
+.spinner {
+	color: var(--color-base-400);
+}
+
+.fixed {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	translate: -50% -50%;
+}
+
+.spin {
+	animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}

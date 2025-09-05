@@ -1,8 +1,10 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
-import Input from "#/components/input";
-import { H1 } from "#/components/headings";
 import { toast } from "react-toastify";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Button, Container, Input, Stack, Title } from "@mantine/core";
+import { Layout } from "#/components/layout";
+import { Link } from "#/components/link";
+import FormError from "#/components/form-error";
 
 export const Route = createFileRoute("/signup")({
 	component: SignUp,
@@ -71,55 +73,57 @@ function SignUp() {
 	};
 
 	return (
-		<div className="flex flex-col max-w-lg mx-auto w-full">
-			<H1>Sign up</H1>
-			<form onSubmit={onSubmit} className="flex flex-col gap-2">
-				<label htmlFor="display_name">Name</label>
-				<Input
-					id="display_name"
-					name="display_name"
-					type="text"
-					placeholder="Name"
-					required
-					onInput={() => setFormErrors({ ...formErrors, name: undefined })}
-				/>
-				<span className="text-red-600/80 text-sm">
-					{formErrors.name && formErrors.name}
-				</span>
-				<label htmlFor="email">Email</label>
-				<Input
-					id="email"
-					name="email"
-					type="email"
-					placeholder="Email"
-					required
-					onInput={() => setFormErrors({ ...formErrors, email: undefined })}
-				/>
-				<span className="text-red-600/90 text-sm">
-					{formErrors.email && formErrors.email}
-				</span>
-				<label htmlFor="password">Password</label>
-				<Input
-					id="password"
-					name="password"
-					type="password"
-					placeholder="Password"
-					required
-					onInput={() => setFormErrors({ ...formErrors, password: undefined })}
-				/>
-				<span className="text-red-600/80 text-sm">
-					{formErrors.password && formErrors.password}
-				</span>
-				<button className="mt-4 bg-primary-400 hover:bg-primary-500 text-base-50 p-2 font-medium">
+		<Layout>
+			<Container size="xs" w="100%">
+				<Title order={1} mb="lg">
 					Sign up
-				</button>
-				<p className="text-base-500 mt-2">
-					{"Already have an account? "}
-					<Link to="/signin" className="text-blue-500">
-						Sign in now
-					</Link>
-				</p>
-			</form>
-		</div>
+				</Title>
+				<form onSubmit={onSubmit}>
+					<Stack gap="md">
+						<label htmlFor="display_name">Name</label>
+						<Input
+							id="display_name"
+							name="display_name"
+							type="text"
+							placeholder="Name"
+							required
+							onInput={() => setFormErrors({ ...formErrors, name: undefined })}
+						/>
+						<FormError message={formErrors.name} />
+						<label htmlFor="email">Email</label>
+						<Input
+							id="email"
+							name="email"
+							type="email"
+							placeholder="Email"
+							required
+							onInput={() => setFormErrors({ ...formErrors, email: undefined })}
+						/>
+						<FormError message={formErrors.email} />
+						<label htmlFor="password">Password</label>
+						<Input
+							id="password"
+							name="password"
+							type="password"
+							placeholder="Password"
+							required
+							onInput={() =>
+								setFormErrors({ ...formErrors, password: undefined })
+							}
+						/>
+						<FormError message={formErrors.password} />
+						<Button type="submit" mt="sm">
+							Sign up
+						</Button>
+						<p>
+							{"Already have an account? "}
+							<Link to="/signin" c="blue">
+								Sign in now
+							</Link>
+						</p>
+					</Stack>
+				</form>
+			</Container>
+		</Layout>
 	);
 }

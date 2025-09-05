@@ -5,6 +5,8 @@ import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { AuthProvider } from "#/auth/provider";
 import { routeTree } from "#/routeTree.gen";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { MantineProvider } from "@mantine/core";
+import { theme } from "./theme";
 const Toast = lazy(() => import("#/components/toast"));
 
 const queryClient = new QueryClient({
@@ -28,13 +30,15 @@ declare module "@tanstack/react-router" {
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
-		<AuthProvider>
-			<QueryClientProvider client={queryClient}>
-				<RouterProvider router={router} />
-				<Suspense>
-					<Toast />
-				</Suspense>
-			</QueryClientProvider>
-		</AuthProvider>
+		<MantineProvider theme={theme}>
+			<AuthProvider>
+				<QueryClientProvider client={queryClient}>
+					<RouterProvider router={router} />
+					<Suspense>
+						<Toast />
+					</Suspense>
+				</QueryClientProvider>
+			</AuthProvider>
+		</MantineProvider>
 	</StrictMode>,
 );

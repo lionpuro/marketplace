@@ -1,12 +1,23 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useState, type FormEvent, type MouseEvent } from "react";
 import { Protected } from "#/components/protected";
 import { useAuth } from "#/auth/use-auth";
-import { H1 } from "#/components/headings";
-import { Modal } from "#/components/modal";
-import { IconPencil, IconTrash } from "#/components/icons";
+import { IconTrash } from "#/components/icons";
 import { updateProfile } from "firebase/auth";
 import { toast } from "react-toastify";
+import { Layout } from "#/components/layout";
+import {
+	Modal,
+	Box,
+	Button,
+	Group,
+	Stack,
+	Text,
+	TextInput,
+	Title,
+} from "@mantine/core";
+import { Link } from "#/components/link";
+import { useDisclosure } from "@mantine/hooks";
 
 export const Route = createFileRoute("/account/")({
 	component: Component,
@@ -17,10 +28,8 @@ function Component() {
 	const [displayName, setDisplayName] = useState(
 		currentUser?.displayName ?? "",
 	);
-	const [modalOpen, setModalOpen] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);
-
-	const closeModal = () => setModalOpen(false);
+	const [opened, { open, close }] = useDisclosure(false);
 
 	const onDelete = async () => {
 		if (!currentUser) {
@@ -38,7 +47,7 @@ function Component() {
 			if (!response.ok) {
 				throw new Error("Failed to delete user");
 			}
-			closeModal();
+			close();
 			signOut();
 		} catch (err) {
 			console.error(err);
@@ -88,120 +97,116 @@ function Component() {
 	};
 
 	return (
-		<div className="flex flex-col grow gap-4 w-full max-w-screen-sm mx-auto">
-			<H1>Account</H1>
-			<Protected allowUnverified={true}>
-				<>
-					{currentUser && (
-						<div className="flex flex-col gap-4">
-							<form onSubmit={onSubmit} className="flex flex-col gap-4">
-								<div className="flex gap-2">
-									<h2 className="font-semibold text-lg mr-auto">
-										{"User information "}
-									</h2>
-									{!isEditing ? (
-										<button
-											type="button"
-											onClick={toggleEditing}
-											className="flex items-center gap-2 bg-primary-400 text-base-50 pl-2 pr-3 py-0.5"
+		<Layout>
+			<div>
+				<Title order={1} mb="md">
+					Account
+				</Title>
+				<Protected allowUnverified={true}>
+					<>
+						{currentUser && (
+							<Stack gap="md">
+								<form onSubmit={onSubmit}>
+									<Group mb="md" gap="sm">
+										<Title order={2} mr="auto" fw={600} fz="lg">
+											{"User information "}
+										</Title>
+										{!isEditing ? (
+											<Button type="button" onClick={toggleEditing}>
+												Edit
+											</Button>
+										) : (
+											<>
+												<Button
+													type="submit"
+													disabled={
+														displayName === currentUser.displayName ||
+														displayName === ""
+													}
+												>
+													Save
+												</Button>
+												<Button
+													variant="light"
+													c="gray.7"
+													type="button"
+													onClick={toggleEditing}
+												>
+													Cancel
+												</Button>
+											</>
+										)}
+									</Group>
+									<Group mb="xs" align="center">
+										<Box
+											component="span"
+											miw="3.5rem"
+											h={42}
+											className="center-vertical"
 										>
-											<IconPencil />
-											Edit
-										</button>
-									) : (
-										<>
-											<button
-												type="submit"
-												className="bg-primary-400 disabled:bg-base-300 text-base-50 disabled:text-base-500 px-3 py-0.5"
-												disabled={
-													displayName === currentUser.displayName ||
-													displayName === ""
-												}
-											>
-												Save
-											</button>
-											<button
-												type="button"
-												onClick={toggleEditing}
-												className="bg-base-400 text-base-50 px-3 py-0.5"
-											>
-												Cancel
-											</button>
-										</>
-									)}
-								</div>
-								<div className="flex items-center">
-									<label
-										className="font-medium min-w-28"
-										htmlFor="display_name"
-									>
-										Name
-									</label>
-									<input
-										id="display_name"
-										name="display_name"
-										type="text"
-										defaultValue={currentUser.displayName ?? undefined}
-										onChange={(e) => setDisplayName(e.target.value)}
-										disabled={!isEditing}
-										className="py-0.5 px-1.5 border border-base-300 disabled:border-transparent grow"
-										required
-									/>
-								</div>
-								<div className="flex items-center">
-									<label className="font-medium min-w-28" htmlFor="email">
-										Email
-									</label>
-									<input
-										id="email"
-										name="email"
-										type="text"
-										defaultValue={currentUser.email ?? undefined}
-										disabled={true}
-										className="py-0.5 px-1.5 border border-base-300 disabled:border-transparent grow"
-									/>
-								</div>
-							</form>
-							{!currentUser.emailVerified && (
-								<p className="text-sm text-base-600">
-									{"Your email is unverified. "}
-									<Link to="/account/verification" className="text-blue-500">
-										Click here to verify your email
-									</Link>
-								</p>
-							)}
-							<button
-								onClick={() => setModalOpen(true)}
-								className="py-1.5 px-4 bg-red-600/80 text-base-50 w-fit mt-4 flex items-center gap-2"
-							>
-								<IconTrash />
-								Delete account
-							</button>
-							<Modal isOpen={modalOpen} onClose={closeModal}>
-								<div className="flex flex-col bg-base-100 p-8">
-									<span className="text-lg font-medium text-base-800 w-full mb-8">
+											Name
+										</Box>
+										{!isEditing ? (
+											<Text px="md">{currentUser.displayName}</Text>
+										) : (
+											<TextInput
+												id="display_name"
+												name="display_name"
+												type="text"
+												defaultValue={currentUser.displayName ?? undefined}
+												onChange={(e) => setDisplayName(e.target.value)}
+												required
+											/>
+										)}
+									</Group>
+									<Group align="center">
+										<Box
+											component="span"
+											miw="3.5rem"
+											h={42}
+											className="center-vertical"
+										>
+											Email
+										</Box>
+										<Text px="md">{currentUser.email}</Text>
+									</Group>
+								</form>
+								{!currentUser.emailVerified && (
+									<Text size="sm">
+										{"Your email is unverified. "}
+										<Link to="/account/verification" c="blue.5" fw={500}>
+											Click here to verify your email
+										</Link>
+									</Text>
+								)}
+								<Button onClick={open} bg="red.7" w="fit-content">
+									<IconTrash />
+									<Box ml={8}>Delete account</Box>
+								</Button>
+								<Modal
+									opened={opened}
+									onClose={close}
+									transitionProps={{ duration: 0 }}
+									withCloseButton={false}
+									centered
+								>
+									<Text mb="md" c="gray.7" size="lg">
 										Are you sure you want to delete your account?
-									</span>
-									<div className="flex justify-end gap-4">
-										<button
-											onClick={closeModal}
-											className="py-1.5 px-4 font-medium bg-base-400 hover:bg-base-500 text-base-50"
-										>
+									</Text>
+									<Group justify="end" gap="sm">
+										<Button onClick={close} variant="light" c="gray.7">
 											Cancel
-										</button>
-										<button
-											onClick={onDelete}
-											className="py-1.5 px-4 font-medium bg-red-600/80 hover:bg-red-700/80 text-base-50"
-										>
+										</Button>
+										<Button onClick={onDelete} bg="red.7">
 											Delete
-										</button>
-									</div>
-								</div>
-							</Modal>
-						</div>
-					)}
-				</>
-			</Protected>
-		</div>
+										</Button>
+									</Group>
+								</Modal>
+							</Stack>
+						)}
+					</>
+				</Protected>
+			</div>
+		</Layout>
 	);
 }

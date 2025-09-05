@@ -1,14 +1,23 @@
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import FormError from "#/components/form-error";
-import { H1 } from "#/components/headings";
-import Input from "#/components/input";
 import { Protected } from "#/components/protected";
 import { useLocation } from "#/hooks/use-location";
 import { useCreateListing } from "#/query/listings";
 import { useCategories } from "#/query/categories";
 import type { NewListingBody } from "backend";
-import { Select } from "#/components/select";
+import {
+	Title,
+	NativeSelect,
+	Input,
+	Button,
+	InputLabel,
+	Textarea,
+	type InputLabelProps,
+	Stack,
+	Container,
+} from "@mantine/core";
+import { Layout } from "#/components/layout";
 
 export const Route = createFileRoute("/listings/new")({
 	component: Component,
@@ -54,140 +63,158 @@ function Component() {
 		};
 		createListing(body);
 	};
+	const labelProps: InputLabelProps = {
+		size: "md",
+		mt: "md",
+	};
 
 	if (isSuccess) {
 		return <Navigate to="/" />;
 	}
 	return (
-		<Protected>
-			<div className="flex flex-col grow w-full max-w-screen-sm mx-auto">
-				<H1>New listing</H1>
-				<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
-					<label htmlFor="category">Category</label>
-					<Select
-						{...register("category", {
-							valueAsNumber: true,
-							required: "Required",
-							validate: (val) => (isNaN(val) ? "Required" : true),
-						})}
-					>
-						<option value="">
-							{loadingCategories ? "--" : "Select category"}
-						</option>
-						{categories?.map((c) => (
-							<option key={c.id} value={c.id}>
-								{c.name[0].toUpperCase() + c.name.slice(1)}
-							</option>
-						))}
-					</Select>
-					<FormError message={errors.category?.message} />
-					<label htmlFor="title">Title</label>
-					<Input
-						{...register("title", {
-							required: "Required",
-							validate: (val) => {
-								if (val.replaceAll(" ", "") === "") {
-									return "Required";
-								}
-								return true;
-							},
-						})}
-						className="bg-white"
-					/>
-					<FormError message={errors.title?.message} />
-					<label htmlFor="description">Description</label>
-					<textarea
-						{...register("description")}
-						rows={3}
-						className="p-3 field-sizing-content bg-white border border-base-100"
-					/>
-					<label htmlFor="price">Price</label>
-					<span className="w-fit relative after:absolute after:right-2 after:top-1/2 after:translate-y-[-50%] after:content-['€'] after:text-base-800 after:font-medium">
-						<Input
-							{...register("price", {
-								valueAsNumber: true,
-								validate: (val) => {
-									if (isNaN(val)) {
-										return "Invalid price";
-									}
-									return true;
-								},
-								required: "Required",
-							})}
-							inputMode="numeric"
-							className="bg-white pr-5 w-36"
-						/>
-					</span>
-					<FormError message={errors.price?.message} />
-					<label htmlFor="country">Country</label>
-					<Select
-						{...register("country", {
-							onChange: () => {
-								setValue("state", undefined);
-								setValue("city", undefined);
-							},
-							disabled: !countries,
-							required: "Required",
-						})}
-					>
-						<option value="">--</option>
-						{countries?.map((country) => (
-							<option key={country.id} value={country.iso2 ?? undefined}>
-								{country.name}
-							</option>
-						))}
-					</Select>
-					<FormError message={errors.country?.message} />
-					<label htmlFor="state">State</label>
-					<Select
-						{...register("state", {
-							onChange: () => {
-								setValue("city", undefined);
-							},
-							disabled: !states || states.length === 0,
-							required: states && states.length > 0 ? "Required" : false,
-						})}
-					>
-						<option value="">
-							{states && states.length === 0 ? "No states" : "--"}
-						</option>
-						{states?.map((state) => (
-							<option key={state.id} value={state.iso2 ?? undefined}>
-								{state.name}
-							</option>
-						))}
-					</Select>
-					<FormError message={errors.state?.message} />
-					<label htmlFor="city">City</label>
-					<Select
-						{...register("city", {
-							valueAsNumber: true,
-							required: cities && cities.length > 0 ? "Required" : false,
-							disabled: !cities || cities.length === 0,
-						})}
-					>
-						<option value="">
-							{(states && states.length === 0) ||
-							(cities && cities.length === 0)
-								? "No cities"
-								: "--"}
-						</option>
-						{cities?.map((city) => (
-							<option key={city.id} value={city.id}>
-								{city.name}
-							</option>
-						))}
-					</Select>
-					<FormError message={errors.city?.message} />
-					<button
-						type="submit"
-						className="mt-4 bg-primary-400 text-base-50 disabled:bg-base-100 disabled:text-base-400 py-1.5"
-						disabled={!isValid || isPending}
-					>
-						Submit
-					</button>
-				</form>
-			</div>
-		</Protected>
+		<Layout>
+			<Protected>
+				<Container size="sm" w="100%">
+					<Title order={1}>New listing</Title>
+					<form onSubmit={handleSubmit(onSubmit)}>
+						<Stack gap={4}>
+							<InputLabel htmlFor="category" {...labelProps}>
+								Category
+							</InputLabel>
+							<NativeSelect
+								{...register("category", {
+									valueAsNumber: true,
+									required: "Required",
+									validate: (val) => (isNaN(val) ? "Required" : true),
+								})}
+							>
+								<option value="">
+									{loadingCategories ? "--" : "Select category"}
+								</option>
+								{categories?.map((c) => (
+									<option key={c.id} value={c.id}>
+										{c.name[0].toUpperCase() + c.name.slice(1)}
+									</option>
+								))}
+							</NativeSelect>
+							<FormError message={errors.category?.message} />
+							<InputLabel htmlFor="title" {...labelProps}>
+								Title
+							</InputLabel>
+							<Input
+								{...register("title", {
+									required: "Required",
+									validate: (val) => {
+										if (val.replaceAll(" ", "") === "") {
+											return "Required";
+										}
+										return true;
+									},
+								})}
+							/>
+							<FormError message={errors.title?.message} />
+							<InputLabel htmlFor="description" {...labelProps}>
+								Description
+							</InputLabel>
+							<Textarea
+								{...register("description")}
+								size="md"
+								resize="vertical"
+								rows={3}
+							/>
+							<InputLabel htmlFor="price" {...labelProps}>
+								Price
+							</InputLabel>
+							<Input
+								rightSection={"€"}
+								rightSectionProps={{ color: "gray.7" }}
+								w={144}
+								{...register("price", {
+									valueAsNumber: true,
+									validate: (val) => {
+										if (isNaN(val)) {
+											return "Invalid price";
+										}
+										return true;
+									},
+									required: "Required",
+								})}
+								inputMode="numeric"
+							/>
+							<FormError message={errors.price?.message} />
+							<InputLabel htmlFor="country" {...labelProps}>
+								Country
+							</InputLabel>
+							<NativeSelect
+								{...register("country", {
+									onChange: () => {
+										setValue("state", undefined);
+										setValue("city", undefined);
+									},
+									disabled: !countries,
+									required: "Required",
+								})}
+							>
+								<option value="">--</option>
+								{countries?.map((country) => (
+									<option key={country.id} value={country.iso2 ?? undefined}>
+										{country.name}
+									</option>
+								))}
+							</NativeSelect>
+							<FormError message={errors.country?.message} />
+							<InputLabel htmlFor="state" {...labelProps}>
+								State
+							</InputLabel>
+							<NativeSelect
+								{...register("state", {
+									onChange: () => {
+										setValue("city", undefined);
+									},
+									disabled: !states || states.length === 0,
+									required: states && states.length > 0 ? "Required" : false,
+								})}
+							>
+								<option value="">
+									{states && states.length === 0 ? "No states" : "--"}
+								</option>
+								{states?.map((state) => (
+									<option key={state.id} value={state.iso2 ?? undefined}>
+										{state.name}
+									</option>
+								))}
+							</NativeSelect>
+							<FormError message={errors.state?.message} />
+							<InputLabel htmlFor="city" {...labelProps}>
+								City
+							</InputLabel>
+							<NativeSelect
+								{...register("city", {
+									valueAsNumber: true,
+									required: cities && cities.length > 0 ? "Required" : false,
+									disabled: !cities || cities.length === 0,
+								})}
+							>
+								<option value="">
+									{(states && states.length === 0) ||
+									(cities && cities.length === 0)
+										? "No cities"
+										: "--"}
+								</option>
+								{cities?.map((city) => (
+									<option key={city.id} value={city.id}>
+										{city.name}
+									</option>
+								))}
+							</NativeSelect>
+							<FormError message={errors.city?.message} />
+							<Button type="submit" mt="xl" disabled={!isValid || isPending}>
+								Submit
+							</Button>
+						</Stack>
+					</form>
+				</Container>
+			</Protected>
+		</Layout>
 	);
 }
